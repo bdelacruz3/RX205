@@ -1,0 +1,2825 @@
+RX205 Willow Inpatient & Willow Ambulatory User Configuration
+February 2024 and later
+Training Companion
+Willow Ambulatory, Willow Inpatient, Willow Inventory
+1: Epic's Data Structure
+2: Provisioning Pharmacy Staff
+3: Adjusting System Access
+Introduction
+Security Structure
+Editing a Willow Security Class
+Key Takeaways
+Adjusting Access for a Subset of Users
+Editing Other Types of Security Classes
+Reviewing the Chapter
+4: Changing Startup Activities and Toolbars
+5: Configuring Print Group-Based Reports
+Introduction
+Examples of Print Group-based Reports
+Editing an Existing Report
+Step 1: Determine How the Report Needs to Change
+Step 2: Identify the Report
+Step 3: Determine Which Print Groups
+Step 4: Edit the Report
+Beyond the Basics: Configuring a Print Group
+Reviewing the Chapter
+6: Configuring Options Within Activities
+Introduction
+Profiles vs. Security Classes vs. Roles
+Where does the SnapShot Report Come From?
+Does Everyone Share the Same Profile (LPR)?
+How are Profiles Attached to Users?
+How Do the Profiles Affecting a User Interact?
+Making Changes to a Profile
+Identifying the Profiles Affecting a User
+Willows' Profile Strategy
+Editing Profile Records
+Exercise: Exploring and Editing Profiles
+If You Have Time: Flags to Resolve
+Test Your Work
+Focus Questions
+Appendix A: RX205 Self-Assessment
+© 2024 Epic Systems Corporation - Confidential - Terms of Use - Privacy Policy - Your responsibilities for safe use
+
+RX205 Willow Inpatient & Willow Ambulatory User Configuration
+As always, remember your responsibilities for safe use of the software. Last Significant Update:05/20/24
+Request exam for this version by:October 11th, 2024
+Materials and assessments for the next version available:October 20th, 2024
+1: Epic's Data Structure
+Introduction
+When users log into Hyperspace and access a patient chart, they're accessing data that lives in Chronicles. Chronicles is the database management system ("the database") that provides the underlying structure for all of Epic’s applications.
+
+Users and administrators access Chronicles via a number of paths, including Hyperspace, the Classic client, and Text. 
+
+By the End of This Lesson, You Will be Able to…
+
+Explain the relationship between Hyperspace, Willow Ambulatory, MyChart, Chronicles, Classic, and Text
+Explain when to use Hyperspace vs. when to use the Classic client
+Explain the structure of data in Chronicles (master files, etc.)
+Use the Record Viewer in Classic to view Epic data
+Define and make changes to category lists
+Access and navigate Text
+Describe Epic's facility structure
+Hyperspace, Willow Ambulatory, MyChart and Chronicles
+Hyperspace is Epic’s front-end user interface, accessed on the Hyperdrive client (see below). It’s what most users think of as “Epic” and what you used in your Fundamentals class. End users log in to Hyperspace to complete their workflows and do their jobs. Administrators and builders also log in to Hyperspace to test and troubleshoot build.
+
+Willow Ambulatory is where outpatient pharmacy end users log in to do their jobs. Unlike most other Epic apps, Willow Ambulatory is not in Hyperspace. It exists within its own client.
+
+MyChart is Epic’s Patient Portal. Patients use MyChart to review their own medical history, communicate with clinicians, request refills for prescriptions, receive updates on their prescriptions, and more.
+
+Chronicles is Epic’s database management system, often referred to as “the database.” All the data that users access in Hyperspace and Willow Ambulatory actually lives in Chronicles. When a user logs in to Hyperspace and opens a patient’s chart, Hyperspace is requesting data from Chronicles. When a user documents in a patient’s chart, they are saving data to Chronicles. When a user accesses a patient chart in Willow Ambulatory, they are accessing the exact same record as the user in Hyperspace because both clients are requesting data from Chronicles. When a patient opens the MyChart on app on their phone, their medical data is coming from, you guessed it, Chronicles!
+
+
+
+Technically, Hyperspace is a web-based application. It runs on a web server, called Hyperspace Web. When you launch the Hyperspace icon in training, you’re actually launching a specialized web browser called Hyperdrive. The Hyperdrive client presents the Hyperspace Web application to users, much like how a commercially available browser (Chrome, Edge, Firefox, etc.) presents your favorite web sites.
+
+With that said, “Hyperdrive” isn’t a term your users are likely to see or know. They launch an icon labelled “Hyperspace,” log into a screen that says “Epic Hyperspace,” and see “Hyperspace” in their computer’s task bar.
+
+When your instructor or training materials tell you to do something "in Hyperspace," they mean "in Hyperspace on the Hyperdrive client."
+
+Classic
+The Classic client is the original Hyperspace client. As of Epic’s May 2022 release, all end-user facing activities are available in the new, web-based Hyperspace (and Willow Ambulatory). However, many administrative activities have not yet been migrated and are available only in the Classic client.
+
+If you need to build, configure records, or use utilities, do so in the Classic client (or Text, see below). Some admin activities are already available on the Hyperdrive client, and more will be migrated over time. However, we don't recommend memorizing which activities are in Hyperdrive and which ones must be accessed via Classic.
+
+You should, however, test your build/configuration in Hyperspace on the Hyperdrive client. Log in to Hyperspace as an appropriate test user, one who represents users affected by your build. For example, if you build an Order Set, log in to Hyperspace as a test physician to confirm that the Order Set works as expected.
+
+Beware! You can access most user activities via the Classic client, which makes it tempting to test your build in Classic. Don’t do that. Some activities behave differently in Classic, and you should test your build in the client that users actually use: Hyperdrive.
+
+Critical	
+Build in Classic. Many admin activities are not available in Hyperspace on the Hyperdrive client.
+Test in Hyperspace, on the Hyperdrive client. Some activities behave differently in Classic, and the Hyperdrive client is what your users use.
+
+
+In Epic-hosted training environments, the Classic client is labelled "Classic" (on the icons you launch, on the login screen, on the application title bar, etc.). But when working in your own organization's environment's, they will likely be labelled differently. For example, your test environment might have an icon labelled "TST Hyperspace (Classic client)" and the title bar might read "Hyperspace (Classic client) - TST".
+
+Beyond the Basics	
+If your organization is already live on Epic, it’s possible that some or all of your users are still using the Classic client to access Epic and do their jobs. If so, it likely appears as “Hyperspace” to them.
+
+If you support users who still use the Classic client, you should build and test in the Classic client. (For class, we will assume users are not using Classic, and test our work in Hyperspace on the Hyperdrive client.)
+
+For more information, search galaxy.epic.com for:
+
+Web Migration, Hyperdrive, and You
+Administrative Activities and Your Hyperdrive Migration Timeline
+ 
+
+Coming Soon: the Partial Retirement of Classic
+
+Starting with the May 2024 version of Epic:
+
+Most admin activities will be available in Hyperspace on the Hyperdrive client.
+The Classic client will be partially retired, meaning:
+Only a small set of activities will be available in Classic: those administrative activities that have not yet been web-migrated, plus a few supporting or closely-associated activities. Click here to see the list of activities.
+User-facing activities will no longer be available in the Classic client; you will no longer be able to inadvertently test user workflows in Classic.
+With the May 2024 version, the strategy will shift to "Build in Hyperspace (on the Hyperdrive client), unless you can't."
+For more information, go to nova.epic.com and review release note 876656, "It's Time to Start Building in Hyperdrive."
+This training companion is based on the February 2024 version of Epic. The changes described above will be reflected in Epic's project team training starting on October 21, 2024
+
+Text
+“Text” is a text-based, back-end interface with Chronicles data, used solely by administrators for creating, editing, and analyzing records. Text runs directly on the server that hosts Chronicles, and you connect to it via a terminal emulator (like PuTTY or Reflection; we use PuTTY in training).
+
+Text includes a number of different applications, such as:
+
+Clinical Administration (for various clinical apps)
+Chronicles (for importing, duplicating, hiding, searching for, or otherwise managing records)
+Training Tools (which includes things like patient duplication)
+Security (for various user-provisioning and access management tools)
+Text isn’t going anywhere. While some administrative activities have been built in Hyperspace or Classic, there will always be some tools and editors that exist only in text. In training, we will always specify whether you should be building something in Text or in Classic.
+
+
+
+How Data is Stored in Chronicles
+Critical	If you are self-studying, please review the following e-learning before beginning this chapter: Introduction to Chronicles [GEN601A]. The e-learning has an accompanying workbook that is available from the lesson's weLearning page. Visit https://welearning.epic.com to search for this video and browse many more informative videos.
+ In each of the boxes below, fill in the Epic term. 
+
+
+
+Chronicles
+
+You can think of Chronicles as a giant filing cabinet. All of the data that your staff and clinicians enter in the system is stored in this filing cabinet.
+
+Master Files (INIs)
+
+Information in Chronicles is organized into master files. Each master file stores all the data about one type of thing. For example, information about patients is stored in the Patient master file and information about clinicians is stored in the Provider master file.
+
+In the filing cabinet analogy, the drawers in the filing cabinet represent master files.
+
+Each master file has a unique INI, a three-character code that identifies the master file in Epic code. For example, the Patient master file's INI is EPT and the Provider master file's INI is SER. 
+
+Beyond the Basics	
+Dynamic vs. Static master files:
+
+Dynamic master files have records that are built and updated by users as they work in the system, like the Patient (EPT) or Orders (ORD) master files.
+
+Static master files have records that are built and updated by administrators, like the Medication (ERX) or Provider (SER) master files.
+
+Records
+
+The next level in the Chronicles data structure is a record. Each record stores information about one specific individual or entity in the master file. Each patient has one record in the Patient (EPT) master file. Each clinician has one record in the Provider (SER) master file. Each combination of a drug, strength, and form has one record in the Medication (ERX) master file.
+
+In the filing cabinet analogy, each folder represents one record.
+
+Items & Values
+
+Each master file contains a set of prompts or fields for storing information, called items. Each record contains values for some of those items. Every record in the same master file has the same set of items, but each record will have a different set of values. 
+
+In the filing cabinet analogy, the fields you fill in on each file folder represent items. What you actually write in those fields are values.  
+
+Contacts
+
+A contact is a set of values within a single record that all relate to a particular event or significant change to that record. What a contact represents varies from master file to master file. For example: 
+
+In a Patient (EPT) record, a contact represents a visit, a telephone encounter, a hospital admission, or a registration event. Patient contacts are often referred to as "visits" or "encounters."
+In an Order (ORD) record, there's one contact when the order is signed, another contact when the order is verified, a contact for each dispense, another contact for each administration on the MAR, etc. 
+In a Provider (SER) record, there would typically only be a new contact when something significant changes about the clinician's credentials. For example, when a a pharmacy student becomes a pharmacist (and continues working at your organization), you'd create a new contact to record that change.    
+In the filing cabinet analogy, contacts are represented by dated sheets of paper in the file folder.
+
+Not every item in master file is tracked at the contact level. Items such as a record's name, alias's, and unique ID are usually "no-add" items, meaning their values are stored at the record level rather than in a specific contact. Epic programmers decide which items are contact-specific, and which ones are no-add. 
+
+Plenty of master files don't really have or use contacts. For example, Medication (ERX) records technically have a number of contact-specific items, but we've found that there is little value in tracking changes in those items over time. As a result, Epic recommends that you only have one contact in each ERX record.
+
+Record Viewer
+Record Viewer is a utility for looking at the data stored in Chronicles for particular records. It's available in Classic to administrators and others with proper security. 
+
+Beyond the Basics	Record Viewer is available in Hyperspace (on the Hyperdrive client) and Willow Ambulatory but it lacks all of the functionality that is available in the Classic client. 
+In the following exercise, you'll complete a couple end-user workflows and then see how that data appears in Record Viewer.
+
+ 
+
+Exercise 1: Using Record Viewer
+Part 1: Explore Data as a User
+As you work through this part, fill in the blanks using the following terms:
+
+Word Bank
+Master File     Item         Contact
+Record          Value
+Log into Hyperspace as Toby Myosin:
+User ID: TRN151
+Password:  train
+
+Click the Orders button at the top left corner.  Search for the Dianita patient with your assigned last name, and open her chart. 
+Fill in the blanks: You're looking up a  in the Patient (EPT) .
+At the top of the Storyboard on the left, click Dianita's name.
+The Demographics activity opens.
+Click   next to the Basics heading to edit Dianita's demographics.
+If you are unable to edit her demographics, LOG OUT and LOG IN. 
+Scroll down to the Additional Demographics section.
+Fill in the blanks: Ethnic Group and Marital Status are two different . "Not Hispanic, Latino/a, or Spanish origin" and "Never Married" are .
+Try entering "It's complicated" in the Marital Status field. Can you? Why not? (Hint: click .)
+
+This item is populated by a category list: a set of possible values for a particular item.
+Hold the Ctrl key down and click in the Marital Status field.
+This window appears. What do you see at the top left (where it's blurred out below)? 
+
+The info at the top left is the address of this item: the Master File (INI) that stores the data, and the item number (the ID of the item in which the data is stored).
+Close the item info box by clicking the .
+Change Dianita's Marital Status to "Married". Then close the Demographics activity by clicking the X in the top right corner of the activity.
+Go to the Chart Review activity for Dianita.
+Fill in the blanks: On the Encounters tab of Chart Review, each visit ("ED to Hosp-Admission," "Telephone," "Office Visit") is a  within Dianita's .
+Select the current visit (the "ED to Hosp-Admission"). The details of this visit open on the right. 
+Who is the last attending provider? 
+What is the principal problem? 
+Fill in the blanks: the admission date, last attending provider, and principal problem are . The answers you wrote down above are .
+Stay logged into Hyperspace, but move on to the next section. 
+Part 2: Explore Data Using Record Viewer
+Launch Classic (not Hyperspace), and log in as your administrator (ADM##/train).
+As you log in: note that the login screen says "Classic"
+Once you log in, notice that your color scheme is set to black-and-gray. This is to help distinguish Classic from Hyperspace.
+Also, look at the top left corner of the window. It says "Classic" instead of "Hyperspace."
+On the main toolbar, click Record Viewer.
+Let's start by reviewing your patient's record. In the INI field enter "EPT" (for the Patient master file) and in the Record field, look up your Dianita patient.  
+In the Contact field, click magnifying glass. 
+You see all the contacts that exist for this patient record.
+Some of these (like the current hospital encounter, the telephone encounter, and the office visit) appeared in the Chart Review activity. 
+The History, Travel, and Registration contacts didn't appear in Chart Review because they're really just there for technical reasons.
+Select the Hospital Encounter contact (contact 6) and click View Record. 
+You're now seeing all the items that are populated for this record, and the values they are populated with. 
+Note that each item has both a number and a name. (Note: an item's name often doesn't match the field as it appears to users.)
+At the very top of the record, find items ".1" and ".2". What do they represent?
+In most master files, item number .1 is the unique ID of the record, and item .2 is the name of the record. If you ever hear someone refer to "the .1" or "the .2," that's what they're talking about.
+Find the ADDRESS item. 
+What number does this item have? 
+What value does this item have for Dianita? 
+Click the link that says 50 - ADDRESS.
+You're now looking at the item details for item EPT 50. 
+Note the data type at the top left says "String." That means the value for this item can be basically any string of characters (it's free text). Other items might have data type of "Numeric" (the values must be a number) or "Date" (the values must be a date), and so forth. 
+Close the Database Management tab to return to the Record Viewer. 
+Scroll down to item 140.
+HINT: you can use the Jump To field to jump to a particular item number.
+What is the name of this item?  
+What value does Dianita's record have for this item? 
+You did that! You set that value in the Demographics activity, remember?
+Click the link for 140 - MARITAL STATUS.
+What data type does this item have? 
+In the Item Editor, find the category list? Where have you seen these options before? 
+Close the Database Management tab to return to the Record Viewer.
+Find item 140 - MARITAL STATUS again. Is the value for this item specific to this contact? Or is it stored at the record level?
+Hint: "no-add" items are stored at the record level.
+On the right, under Item Filters, click Overtime to see only items whose values are specific to the contact. 
+Press Ctrl+F (for "Find") and search for "attending".
+The screen jumps down to Related Group 18864. 
+A related group is a set of items that have related values; a table, basically.  
+Scroll down a little to see the values of this related group's items. 
+Notice that STETHOSCOPE, SAM [TRN081] is listed as the attending provider. 
+When Record Viewer shows a value as a hyperlink, that means it's a networked item: the item's value is actually a record in another master file. 
+Click the link for STETHOSCOPE, SAM [TRN081].
+Look up at the top of the Record Viewer. What INI and Record are you looking at now?
+. 
+This is a record in the Provider (SER) master file. SER records are "static," records, meaning they are created and configured intentionally by administrators.
+By contrast, the Patient (EPT) master file is full of "dynamic" records, which the system creates and updates automatically as users perform their workflows.  
+Use Ctrl+F to find the item number and value for each of the following items:
+Provider Type: Item number   Value 
+Provider Specialty: Item number  Value 
+Meds Authorizing Provider:  Item number  Value 
+Part 3: Document Your Findings
+If you're looking at a field in Hyperspace, how can you learn what INI and item that field represents?
+
+How can you distinguish between Classic and Hyperspace (at least in training?)
+
+What are some different data types that an item can have?
+
+What does it mean if Record Viewer shows a value as a hyperlink?
+
+How can you limit Record Viewer to show you only values associated with a particular contact? 
+
+True or False: every time you edit something in a record, the system creates a new contact.
+
+If You Have Time: Explore More!
+Leave Classic open, but go back to Hyperspace. 
+HINT: Use Alt + Tab to jump between applications. 
+You should still be logged in to Hyperspace as Toby Myosin TRN151/train.
+Click Orders to open Dianita's chart.  
+Go to the Verify Orders activity for Dianita. You see two orders to verify: enoxaparin and acetaminophen.
+Fill in the blanks: each of these is a  in the Orders (ORD) .
+Fill in the blanks: for the enoxaparin, Order Dose, Route, and Frequency are . "1 mg/kg," and "Subcutaneous" and "Every 12 hours" are .
+Fill in the blanks: under Products to Dispense, Product is an  in the Orders (ORD) master file, and "ENOXAPARIN SODIUM 80 MG/0.8ML IJ SOSY" is a  in this ORD record. But "ENOXAPARIN SODIUM 80 MG/0.8 ML IJ SOSY" is also a  in the Medications (ERX) .
+Edit the Clinical Details of the enoxaparin order. Change the Start date to "t" (today) and the time to "n" (now). 
+Verify the enoxaparin order. (Do NOT verify the acetaminophen order.)
+Go the Medications activity. Select the enoxaparin order that you just verified and click Order Hx.
+You should see a Verify action, plus a number of Dispense actions.
+Fill in the blanks: each of these actions is a  in this order's .
+Click Label Hx.
+Click Reprint / Preview Labels to view the label. 
+In the label preview window, make note of the Order # for this order. Write it down here: _________  
+Keep Hyperspace open, but switch to Classic (and log in as your administrator if needed). 
+At the top of the Record Viewer, change the INI to "ORD". In the Record field, enter the Order # that you wrote down at the very end of Part 1.
+In the Contact field, click the magnifying glass .
+You should see a contact for each dispense that you saw in Order Hx, as well as one for when you verified the order and when the order was placed.
+Pick the "Ordered" contact and click View Record.
+On the right, click No-Add to see only items with values stored at the record level.
+Use CTRL+F to find the item number and value for each of the following:
+Authorizing Provider: Item number   Value 
+Medication Route: Item number   Value 
+Discrete Frequency: Item number   Value 
+On the right, click Overtime to see only items whose values are specific to this contact.
+There aren't many! Most the items that get populated when you sign an order are actually no-add items!
+Change the Contact field to the "Verify" contact and click View Record.
+You're now seeing all the values specifically associated with the verification action.
+See if you can find the following information:
+The user who verified the order:  Item number   Value 
+The dispensing pharmacy: Item number  Value 
+The dispense code: Item number  Value 
+Under item 48210, click the link for ENOXAPARIN SODIUM 80 MG/0.8ML IJ SOSY.
+You're now looking at the Medication (ERX) record being dispensed for this order.
+Find the following items and make note of their values (HINT: Use the Jump To field!)
+Item 52 - CONFIGURED? 
+Item 110 - PHARM. CLASS 
+Item 114 - SIMPLE GENERIC NAME 
+Item 140 - CONTROLLED? 
+Item 1110 - DEFAULT FREQUENCY 
+Item 7215 - DEFAULT DISPENSE CODE 
+Pretend that want to find all the other enoxaparin sodium ERX records that have been configured in the Foundation System. Based on what you see above, you'd need to search for ERXs where item number  had a value of  and where  had a value of .  
+You can do such a search from here! At the top of the Record Viewer, near the Contact field, select Show Record Selection Options. Then, near the INI field, pick a Search Method of Item. 
+Configure the pop-up window like so, and then click Search.
+How many records did your search find? 
+Note: There are other ways to similar searches (like an ad hoc report in Chronicles), but this is a quick way to see what records match your criteria and look at the values they contain. 
+Click Cancel. 
+Lets return to the Order (ORD) record from earlier. On the right, under the Viewed section, click ORD - enoxaparin (Lovenox) syringe 70 mg [#######] - 2. 
+At the top of Record Viewer, you should now bee looking at INI "ORD" and Contact 2 (the Verify contact). 
+Find item 48225 - RX NDC CSN.
+This item stores which package (NDC) will be dispensed for the order, and the specific contact of that NDC record. ("CSN" stands for "contact serial number.")
+Write the value for this item down here: 
+This isn't technically a networked item, but you can look up the NDC via it's CSN.
+At the top, change the INI to "NDC". Select the Search Method of CSN. Then enter the CSN you wrote down above and press ENTER.
+The system selects the specific NDC and contact associated with that CSN.
+Click View Record. 
+What status does this contact have? (HINT: See item 100) 
+On the right, change the filter from Overtime to All items. 
+What is the unique, internal ID of this record? (HINT: it is not 0703-8680-23; look for item .1!) 
+Who is (was) the manufacturer of this NDC? 
+ What is the most recent Average Wholesale Price of this NDC? 
+On the right, under the Viewed section, go back to looking at the ORD record (any contact). 
+In the Contact field, click the magnifying glass .
+Are there any administration actions? 
+Keep the Record Viewer open, but go back Hyperspace.
+You should still be logged in as your pharmacist, looking at Dianita's chart.
+Go to the MAR activity.
+Click one of the due times for the enoxaparin order. Enter a Site of "Left Lower Abdomen". Click Accept to confirm that administration. 
+Go back to Classic. 
+In the Contact field, click the magnifying glass . There's an administration contact now! Select it and click View Record.
+What item did the system store the site of administration in?  Huh... it doesn't seem to be here. 
+You might expect the info that you documented on the MAR to be stored directly in this contact, but sometimes data is stored in unexpected ways! 
+On the right, change the Item Filters from Overtime to All. Then use Ctrl+F to search for "Left Lower".
+You'll find that value in item 11170 - MAR - SITE, which is part of a great big related group (table). 
+The related group has a row for each action that appears on the MAR.
+If you scroll to the left, you'll see that the whole table is "No-Add," meaning it isn't associated with a specific contact, these values are stored at the record level. 
+Critical	
+You can't always predict which items are no-add (with values stored at the record level) vs. over time (with values stored in a specific contact). The decisions about how and where to store data are made by Epic developers, and they take many things into consideration such as performance, security, backwards compatibility, and potential future needs. 
+
+Record Viewer is a useful tool for when you need to look at the data stored in Chronicles directly, or for figuring out which item a particular setting or value is stored in. But Record Viewer it is NOT the primary tool you should use for reviewing settings or finding records. You'll use dedicated administrative activities and reports for that!  
+
+Key Takeaways: Record Viewer
+Use Record Viewer to look directly at the data stored in Chronicles.
+
+Path: Classic >> main toolbar >> Record Viewer
+To use:
+Enter the INI, record, and contact you want to view, click View Record
+Items are sorted by item number
+Item .1 is always the unique ID of the record in Chronicles
+Item .2 is usually the name of the record (the records in some INIs do not have names) 
+Use Jump To field to jump to a specific item
+Use Ctrl +F to search for a specific string (either in the name of an item, or in a value)
+Use filters on sidebar to show only certain items
+Each item says "no-add" or lists a particular contact
+No-add: the value is stored at the record level, not in a specific contact (use the No-Add filter to see only these items)
+Contact #: the value is stored in that specific contact (use the Overtime filter to see only these items)
+Click an item number/name to see details about that item, such as:
+Data type: string, numeric, date, category, or networked
+For category items, you can also see the category list from here
+For networked items, you can see which INI the item is networked to
+Close the workspace to return to Record Viewer
+In Record Viewer, if an item is networked, its value will display as a hyperlink; clicking that link will open that INI and record in Record Viewer. 
+Category Lists
+Every item in Chronicles has a data type, which determines what kind of data the item can store as a value. The most common data types are:
+
+String: the value is free text; it can be any string of characters. 
+Numeric: the value must be a number.
+Date: the value must be a date
+Networked: the value will be a link to a record, usually one in a different INI
+Technically, the value is just the ID (item .1) of the linked the record, but Record Viewer and administrative activities will show the name of the linked record, too.
+Category: the values will be selected from a list of possible options, called a category list. 
+A category list is a list of potential values for a particular item. It is part of an item. When an Epic developer creates a new item, the might decide to give that item a "category" data type, and they either define the category list as part of that item. 
+
+Example	When you looked Dianita's Demographics in Hyperspace, you saw that the Marital Status field (item EPT 140) was limited to set of possible values—a category list. When you looked up the item details for EPT 140, you saw that it has a "Category" data type, and the category list was defined in that item. 
+ 
+
+Shared Category Lists
+Some items have a "category" data type, but re-use the category list from another item. This is common for category lists that get used in many places, like "Yes/No" or "Gender." If you update the category list once (see below), you update it for all items that use that list.
+
+To see all the items that use a given category list, go to Text >> Clinical Administration >> Troubleshooting Utilities >> Troubleshooting Macros >> Category Item Usage.
+
+Example	
+The "Dispense Code" you see when entering and verifying an order is stored in item ORD 48032. That item has a data type of "category," but the category list is uses is actually defined in another item—item ECT 9060! That same list is used by:
+
+Item ERX 7215, the default dispense code
+Item PHR 8000, where you define what labels print for which dispense codes
+Item RXD 410, where you define the system default dispense code
+etc.
+Any field where you can enter a dispense code, that item is using the category list defined in item ECT 9060. 
+
+Beyond the Basics	The ECT master file doesn't have any records in it. It's a master file that exists for the sole purpose of defining category lists for re-use by other items. 
+
+
+
+
+ 
+
+
+
+Editing a Category List
+Administrators can edit many category lists, changing the possible values that users can select when populating items that use the list. As an administrator, you can add to, edit, or deactivate the choices on a category list. 
+
+To edit a category list:
+
+Identify the INI and item number of an item that uses the list.
+To learn this info:
+In Willow Ambulatory, use record viewer.
+In Hyperspace or Classic, use record viewer or Ctrl +Click in the field.
+In Text, put your cursor on a field and press Home, then press F8.
+In Classic, use the magnifying glass at the top right and search for "Category List Maintenance".
+Enter the INI and item number from step 1. 
+If the item uses a category list from another item, the system will redirect you.
+Once in Category List Maintenance, you can:
+
+ Add a choice to the list:
+Assign it a new, unused ID number in the Add/Edit category field and click Go.
+Give it a Title (what users typically see) and Abbreviation (appears to users/admins when space is limited; must be 12 characters or less).
+If desired, give the new choice Synonyms (alternative ways users can search for the option).
+Click Accept.
+Edit a choice on this list:
+Select it in the table, or enter its ID in the Add/Edit category field and click Go.
+Make your changes and click Accept.
+Deactivate a choice on the list:
+Select it and click Deactivate.
+Deactivated choices no longer appear to users or administrators as a choice to select, but existing values that use this choice are still valid.
+Be sure to click Save to save your changes!
+ 
+
+LOG OUT of Hyperspace, if you haven't already.
+
+Log into Willow Ambulatory as Toby Myosin TRN151/train.
+
+
+Click Front Counter to search for your Dianita's chart, and navigate to Allergies/Contraindications.
+
+Add a new banana allergy.
+
+Example	The CDC and FDA have recently recognized a new allergic reaction; Zombification.
+Look at the list of choices for Reactions.
+
+Is there an option for "Zombification"? 
+Cancel the new allergy for Dianita..
+
+CLOSE THE CHART
+
+Log into Hyperspace as Toby Myosin TRN151/train, go to Allergies for Dianita.
+
+Click  to add a new strawberry allergy.
+
+Look at the list of choices for Reactions.
+
+Are these the same options that you saw in Willow Ambulatory? 
+Is there an option for "Zombification"? 
+Ctrl + click in the Reactions field. Find the INI and item number for this field. Write it down here: 
+
+TRAINER DEMO: Watch as your instructor opens the Category List Maintenance in Classic. DO NOT DO THIS YOURSELF.
+
+They'll enter LPL and 3008
+They'll add a new value for "Zombification"
+They'll update "Shortness of breath" to Shortness of Breath"
+They'll save their changes and close the activity.
+In Hyperspace, cancel the new strawberry allergy and leave the allergies activity.
+
+This refreshes the activity and allows your instructor's changes to appear.
+Return to the allergies activity to add a new allergy of your choice.
+
+Confirm that "Zombification" is a choice.
+Confirm that "Shortness of Breath" has been updated.
+CLOSE THE CHART
+
+In Willow Ambulatory, return to Allergies/Contraindications for Dianita to add a new allergy of your choice.
+
+Confirm that "Zombification" is a choice.
+Confirm that "Shortness of Breath" has been updated
+Critical	
+When you edit a category list, do not change the MEANING behind any of the choices. For example, don't change "Shortness of Breath" to "Unable to Breath". Why? Because items that use this category list store their values as the number from a category list, not as the title. If you change category 2 from "Shortness of Breath" to "Unable to Breath", then you will be retroactively changing what that value means in every record that has that value!
+
+In the demonstration above, the instructor edited the capitalization of a word which is fine! It doesn't change the meaning of the category. But the system doesn't know what is or isn't a change in meaning—and it won't be able to stop you from messing up!
+
+Likewise: you should never delete a category option unless you are 100% positive that it has never been used. You probably won't even have security to do so.
+
+Release Ranges
+Some category lists have release ranges, meaning Epic code expects those options to exist. You cannot edit the category options in that range.
+
+You can see the release range for a category list in the Category List Maintenance activity. 
+
+All Customer Owned: there is no released range; you can edit any options in the category list. 
+All Categories: the entire category list is released by Epic; you can't edit, deactivate, or add any choices to the list. 
+From X to Y: you can't edit the options with IDs between X and Y, but you can create and edit options outside that range. 
+ 
+
+Using Text and Clinical Administration
+While many administrative activities and utilities are available in Classic, some are only available in Text. Recall that "Text" is the text-based, back-end interface that runs on the same server that hosts Chronicles. You connect to it via a terminal emulator (we use PuTTY in training).
+
+Text includes a number of different applications: Clinical Administration, Chronicles itself, Training Tools, and so forth. These applications share a common set of commands and navigation tools. If you aren't familiar with them, they can be a little disorienting. Lets take some time to learn how to navigate Text. 
+
+Launch Text!
+
+Using a workstation in Voyager Hall? Click the Text icon on your desktop.
+Attending a virtual class? Go to access.epic.com and click the Virtual Training Text icon. When "the cow" appears, select the environment for your class and click OK. 
+Practicing or studying on your own? Click the Study ___ Text icon (where "__" is a month and a letter, like "May A" or "Feb B"; it should be the same month/letter that appears on your Hyperspace and Classic Study icons).  
+ When the Text window opens, log in as follows:
+
+Initial password: train (lowercase, you won't see it as you type it)
+User ID: adm## (replacing ## with your TRN##)
+Password: train (again, lowercase and you won't see it as you type it)
+Press Enter to skip the copyright screen.
+
+At the Training Application Access screen, enter "11" (for Clinical Administration) and press Enter.
+
+In training, we will almost always use Clinical Administration when we go to Text.  
+Press Enter to skip the next copyright screen. Pause at the Clinical Administration screen. 
+
+Exercise 2: Navigating Text
+Critical	Once you are in Text, your mouse is basically worthless. You can use your mouse to move the screen around, resize the screen, and highlight/copy text, but you can't navigate with your mouse. All navigation in Text is done with the keyboard.
+To get some experience using Text, we'll play around in one of the main master files that Willow users edit in Text: the Medication (ERX) master file. We're not going to do anything meaningful or important, just play a little. Get as far as you can, and don't worry about messing up!  
+
+Part 1: Navigating Menus
+Clinical Administration is made up of menus. You have to navigate the menus to the master file you're looking for. 
+
+To go forward, enter the number for the option you want and press Enter.
+To go backward, press Page Up or Page Down (or Enter without first entering an option).
+Let's practice!
+
+From the Clinical Administration menu, go to Meds, Allergens, Imm, etc.
+HINT: Enter 11 and press Enter.
+You're at another menu. Go to Order Composer Config (OCC).
+HINT: Enter 12 and press Enter.
+You're at the Configuration: prompt. This is a master file prompt, where you could look up a record in the OCC master file. 
+That's NOT what you want to edit. Go back a screen.
+HINT: Press Page Up. 
+Warning! If you have an extended keyboard, do NOT use the 9 key on the number keypad! Find the actual Page Up key.
+Go to Medications (ERX).
+HINT: Enter 1 and press ENTER. 
+Press Page Up three times.
+Whoa, you're all the way back at the Training Application Access menu. In training, this is far "back" as you can go.
+Go back to Clinical Administration >> Meds, Allergens, Imm, etc. >> Medication (ERX).
+HINT: that means choose 11, then 11 again, and then 1. 
+You should be back at the Medication: master file prompt, ready to select a record. 
+Part 2: Accessing a Record
+At a master file prompt, enter the name or ID of the record you want to edit, then press Enter.  If your search matches on more than one choice, enter the number (from the left) that you want to choose and press Enter. 
+
+After you select a record, you might be presented with a list of contacts. In general, edit the most recent contact (the highest number). 
+
+Let's practice!
+
+At the Medication: prompt, type "trn##" (replacing ## with the TRN## from your class info sheet) and press Enter.
+Select TRN## OSELTAMIVIR PHOSPHATE 6 MG/ML PO SUSR.
+HINT: enter "5" and press Enter. 
+At the contact selection screen, you'll see that you have only one contact. That's typical for ERX records. Select that contact now.
+HINT: Enter "1" and press Enter.
+ You're now in your copy of the oseltamivir suspension ERX record. 
+Press the Page Up key. 
+Warning! If you have an extended keyboard, do NOT use the 9 key on the number keypad! Find the actual Page Up key.
+Uh-oh! You're out of the record! Type "=" and press Enter.
+You're back at the contact selection screen for your oseltamivir ERX.
+Typing "=" at a master file prompt will re-open the last record you edited during this Text session. 
+Select contact 1 and press Enter.
+You're back in your Medication (ERX) record. 
+Part 3: Navigating Within a Record
+Within a record, use the following commands to navigate:
+
+To do this...	...press this
+Move through fields, left to right	Tab or Enter
+Go back to the previous field (right to left)	Shift+Tab
+Go straight up/down to a field	Up or Down Arrows
+Move through the values of a multiple-response field	Up or Down Arrows
+Get help on an item (including the list of possible values)	Shift+F5 *
+Move to the next/previous screen	Page Down or Page Up
+Exit a record from any screen	Shift+F7 *
+Undo a change (but only if you haven't left the field!)	F3 *
+*On a laptop or a Mac, you might also need to hold the Fn key when you press this. 
+
+Let's practice!
+
+You should be in your TRN## OSELTAMIVIR PHOSPHATE 6 MG/ML PO SUSR, with your cursor on the Name field. If you're not there, get there now (see Part 2).
+Move your cursor to the Configured field.
+HINT: Press Tab twice.
+The current value is "Foundation System," but what are the other choices? Pull up the help text for this field.
+HINT:  Press Shift + F5.
+You should see 4 possible values, but "Foundation System" isn't one of them. 
+Press the Down Arrow key a few times to see more choices. 
+What ID number does "Foundation System" have? 
+What type of list do you think this is? 
+Change the Configured field to "Build Needed".
+HINT: Press Enter to leave the help text. Then enter either "build needed" or "1002" and press Enter.
+When entering values from a category list, you can type either part of the name or the ID number.
+Move your cursor to the Synonyms field. 
+Synonyms are alternative ways to search for a record. 
+This is a multiple-response field. The black box on "2." indicates there are more values than you can see.
+Arrow down to the last synonym (3). Press Down Arrow again to add a blank row.
+Add your first and last name as the 4th synonym (no, this is NOT realistic, we're just playing around).  Press Enter when done.
+You should now be on a blank for the 5th synonym. 
+Press Up Arrow to see what you just did. 
+Press Enter to leave the Synonyms field and move the MAR group field.
+Move your cursor down to the Comments field at the very bottom right of the screen, then press Enter or Tab.
+You're now on the 2nd screen of this Medication (ERX) record. Medication records have many screens!
+Press the Up Arrow key. And then press Shift+Tab. 
+Nothing happens! You can Tab/Enter/Arrow down a screen, but you can't use those keys to back up a screen.
+Press Page Up once.
+Now you're back at the previous screen.
+Press Page Down.
+You're back to the second screen. 
+Page Down 20 more times (yes, really). 
+You should be on the Inpatient Order Defaults screen.
+The first field is the Order Display Name, which is how this ERX appears on the Preference List, Facility List, and Database tab to users. 
+Let's add your trn## to the front of this order display name, so that you can tell the record is yours. Type "trn##" (replacing ## with your TRN##).  
+Oh no! You started typing OVER the value that was already there. That's how it works in Text!
+Press F3 (or Fn+F3 on a laptop/Mac) to undo your change. 
+This is a useful feature, but it ONLY works if you haven't left the field yet!
+If you accidentally left the field already, or can't get F3 to work, then just type over the value with: "oseltamivir (TAMIFLU) suspension 6 mg/mL" (case sensitive). 
+With your cursor at the beginning of the Order Display Name field, press the Insert key 6 times. (If you use a Mac: press Fn+Enter to simulate the Insert key.)
+The Insert key pushes the current text to the right.
+Now enter "trn##" (replacing ## with your TRN##) at the front of the order display name, and press Enter. 
+The Order Display Name field should now say: trn## oseltamivir (TAMIFLU) suspension 6 mg/mL 
+Move your cursor to the Default Frequency field. 
+Review the help text for this item (HINT: Shift+F5).
+If you put a value in this field, what will that do?  
+Press Enter to leave the help text.
+In the Default Frequency field, enter "Daily" and press Enter.
+The help text returns, showing you all the frequencies that matched on your search result. It's asking you to select one.
+You want the very first one, "Daily (200001)".
+BEFORE leaving the help text, enter "1" in the Selection field, then press Enter.
+The help text goes away, and you see "Daily" in the Default Frequency field. Huzzah!
+Close this record.
+Hint: Press Shift+F7.
+Critical	
+Notice that you were NOT prompted to save your changes, which means you weren't given an option to cancel and not save your changes. Text saves changes as soon as you Tab or Enter off a field.
+
+Pressing Shift+F7 simply closes the record, releases the lock you have on that record, and makes the changes available in Hyperspace. In many cases, the changes are available even before you Shift+F7!  
+
+Part 4: Test Your Work
+You just made the following changes to your TRN## OSELTAMIVIR PHOSPHATE 6 MG/ML PO SUSR record in Text.
+
+Configured? You set this to "Build Needed"
+Synonyms: You added your first and last name
+Order display name: You added your trn##
+Default frequency: You set it to "Daily" 
+Let's see how these changes appear to users!
+
+Go back to Hyperspace.
+You should already by logged in as Toby Myosin TRN151/train, looking at Dianita's chart.
+Go to the Orders activity. In the new orders search field, enter your first and last name (and press Enter).
+Go to the Database tab.
+You should see something like this:
+
+Look to the far right. Under the Configured? column, confirm it says "Build Needed".
+Accept this medication and open the Order Composer. 
+In the Frequency field, confirm that "Daily" is selected by default.
+ 
+
+If You Have Time: Document Your Findings
+Fill in the blank cells!
+
+To do this...	...press this
+From a master file prompt, open the last record you edited	
+
+
+Tab or Enter
+Get help on an item (including the list of possible values)	
+
+Move to the next/previous screen	
+
+
+Shift+F7
+Undo a change (but only if you haven't left the field!)	
+
+If You Have More Time: Explore More in Text
+Back in Text, see if you can complete the following tasks! 
+
+Re-open your TRN## OSELTAMIVIR PHOSPHATE 6 MG/ML PO SUSR medication record.
+HINT: Text >> Clinical Administration >> Meds, Allergens, Imm, etc. >> Medication (ERX) 
+HINT: Use =, or search by your TRN## or the synonym you entered earlier. 
+HINT: Choose the 1st contact.
+Set Configured to "Validation Needed".
+Hint: Use the ID to set this value, not the name! (Shift+F5 to see the choices and their IDs.)
+Find the INI and Item Number of the Configured field.
+With your cursor in the field, press Home, then press F8 (or Fn + F8 on a laptop or Mac).
+INI: 
+Item Number: 
+Press Enter twice to remove the item information. 
+Page down to the Inpatient Order Defaults screen
+HINT: It's 21 pages down from the first screen.
+Make "75 mg" the default dose.
+HINT: the Suggested Doses for Order Entry table at the bottom of the screen. Arrow down to the 75 mg dose, and enter "Yes" in the Default column.
+Add another dose button for "3.5 mg/kg" (not selected by default). 
+HINT: add another row to the Suggested Doses for Order Entry table.
+ Change the default dispense code from "Unit Dose" to "Oral syringe".
+HINT: page down to the Dispense Code Configuration page (17 pages down from the Inpatient Order Defaults screen).
+Add a Product-Specific Administration Instruction of "Shake well before administration."
+HINT: Page down 10 times to the Default Administration Instructions screen. Use the Short Text field under Product-Specific Administration Instructions.
+Add an additional Route button for "Nasogastric".
+HINT: Page down until you find the Inpatient Order Composer Button Selections.
+Close your record when done!
+HINT: Shift+F7
+Back in Hyperspace, remove the order for oseltamivir. 
+Search for your "trn## oseltam" and select the Database tab.
+Confirm that the Configured? column shows "Validation Needed."
+Accept your medication. Open the Order Composer.
+Confirm that the Dose is 75 mg by default.
+Confirm that you see a 3.5 mg/kg dose button.
+Confirm that you see a Nasogastric route button.
+Confirm that the Prod. Admin. Inst.: appear, and say "Shake well before administration." 
+Confirm that the Dispense code is "Oral syringe".
+Remove this order and log out of Hyperspace. 
+Go to Classic (log in as your administrator if you need to). 
+Use Record Viewer to look at your TRN## OSELTAMIVIR PHOSPHATE 6 MG/ML PO SUSR record. 
+HINT: This is an ERX record! And don't forget to click View Record!
+Find the item number for each of the fields you edited.
+HINT: Use Ctrl + F to search for the values you entered, like "75" or "3.5" or "Nasogastric". The field you're looking for might not be the first match! Use the Next button to cycle through. 
+Configured status is "Validation Needed":  Item 
+Making 75 mg be the default dose:  Item 
+Add a dose button for 3.5 mg/kg:  Items  and 
+Make the default dispense code "Oral syringe":  Item 
+Add "Shake well before administration" as a product admin instruction: Item 
+Add a route button for Nasogastric: Item 
+Hint: look for the field that has "Oral" and "Nasogastric" as values, but no other routes. This item's name is not intuitive!
+Key Takeaways: Navigating Text
+In Text, your mouse is largely useless. This section provides common keystrokes that help you navigate.
+
+ 
+
+Navigating Menus and Master File Prompts
+Command	Key(s)	Explanation
+Previous screen	Page Up	Move to the previous menu
+Return to main menu	opt	
+Brings you back to the initial menu. This will not work when you are in a record.
+
+ 
+
+Re-open last accessed record	=	
+To open the last record you selected in that master file during the login session, press the Equal key at the master file prompt.
+
+ 
+
+Get a list of records	Shift + F5	Enter ? for a list of records at any master file prompt.
+ 
+
+Navigating Within Records
+Command	Key(s)	Explanation
+Help	Shift+F5	A help window appears with information for the item the cursor is on. If this is a category or record list item, the list of choices appears at the bottom of the help text. Press Enter twice to close.
+Close record	Shift+F7	Closes a record from any screen.
+Page Up	From first screen of record, closes the record.
+Page Down	From final screen of record, closes the record.
+Next screen	Page Down	Moves to the first item of the next screen.
+Previous screen	Page Up	Moves to the first item of the previous screen.
+Next field	Tab or Enter	Moves to the next field on a screen.
+Previous field	Shift+Tab (or Left Arrow)	Moves to the field to the left.
+Field above or below	
+Up Arrow or
+
+Down Arrow
+
+Moves to the field above or below the current field, or up and down in a list.
+Delete line	F1	Deletes a value or an entire line of text.
+Delete to end	F2	Erases everything from the cursor to the end of the field. Good for partially deleting characters in free text fields.
+Restore	F3	Restores a field to the value that was there when you moved the cursor into the field. Does not work in all fields!
+Scroll to top of list	Home,
+Up Arrow	Scrolls to the top of a list. Useful for fields with long lists that are only partially displayed.
+Scroll to bottom of list	Home,
+Down Arrow	Scrolls to the bottom of a list. Useful for fields with long lists that are only partially displayed.
+End of field	Home,
+Right Arrow	Moves the cursor to the far right position within the current field.
+Beginning of field	Home,
+Left Arrow	Moves the cursor to the far left position within the current field.
+Display information about item	Home, F8	Displays information about the item the cursor is on, such as the master file INI and item number.
+Screen Fast Forward	Home, F9	Searches down a record for an item or a screen based on text or item numbers.
+Open text editor	Shift+F3	On some fields with free-text entry, expands space available for entering a value.
+Beyond the Basics	If you use a Mac, some keyboard commands will be different. See Keyboard Keys - PC vs Mac for details. 
+Epic's Facility Structure
+Facility structure refers to the records that represent the different parts of your organization: the hospitals, nursing units, rooms, and beds, as well as clinics and departments. The facility structure forms the backbone of your administrative build. Without it, we would be unable to determine where patients are being seen, where users work, and what settings should apply to different users and patients.
+
+Designing and building your facility structure is one of the first tasks in an implementation, but the Willow team is rarely involved. These records are typically owned and created by your scheduling (Cadence), admission/discharge/transfer (Grand Central), and billing (Resolute) project teams. The Willow team is affected by some of their decisions, and must make important settings in some of these records. 
+
+From least- to most-specific, the records that make up your facility structure are:
+
+Record	Represents	Why WIP Cares	Why WAM Cares
+Facility
+(EAF)	The entire enterprise or "instance" of Epic. Your entire organization. 
+(This level was named a long time, before large-scale consolidation in the industry.)	You should know that it exists.	You should know that it exists.
+Service Area (EAF)	Separate business entities within your organization, or that you use your install of Epic. Used for grouping revenue and accounts receivable. 	You should know that they exist.	You should know that they exist.
+Location (EAF)	A hospital or free-standing clinic. There's a separate Location (EAF) record for each hospital and clinic in your organization. 	
+Location records are where we attach:
+
+The formulary
+The main pharmacy for a hospital/clinic
+The content that appears on the Facility List
+Location records are used for the parent hospital/clinic that a pharmacy is related to.
+Department/Unit (DEP)	
+Places where patients receive care, and/or where users work. Includes:
+
+Nursing units in a hospital, where patients are admitted ("EMH 1 East" or "EMH 2 West" or technically "EMH Emergency")
+Outpatient departments, where patients make appointments, receive care, and go home ("EMC Family Medicine," or "EMH Allergy Clinic")
+Hospital outpatient departments, which can see both admitted patients and outpatients ("EMH CT Imaging" or "EMH Cardiac Cath Lab")
+Virtual departments, which never have patient encounters and exist only for users to pick as their login department ("EMH IP Pharmacy" or "EHS Internal Medicine" or "EMH Admitting Department")
+Department/Unit records are where we attach the list of Pharmacy (PHR) records that serve patients in that unit.
+
+Willow users also log into a "virtual" department for their hospital's pharmacy. 
+
+Department/Unit records are where we attach the pharmacy PHR record, preference list, and configure printer routing.
+
+Willow Ambulatory users log into a "virtual department" for their pharmacy.
+
+Room (ROM) and Bed (BED)	These records only exist in nursing units or some hospital outpatient departments. They represent the specific place where a patient gets admitted.	
+Appears on dispense labels, ADS load labels, and cart fill reports to help identify where the patient is. 
+
+Some hospitals will configure dispense logic (the list of Pharmacy's serving a patient) for specific sets of rooms in a unit. 
+
+Used for bedside delivery, aka "Meds to Beds".
+Again, the Willow team doesn't create these records, but we have to make settings in some of them and you can take advantage of them for things like reports. 
+
+Beyond the Basics: More about Epic’s Infrastructure
+The following resources will give you more information about Epic’s infrastructure. Learn more about clients, servers, environments, and refreshes with the following resources:
+
+At weLearning.epic.com watch:
+Epic Client System Basics (SYS600)
+At Galaxy.epic.com, read:
+Environment Strategy Guide
+Client Systems and Cogito Systems Environment Strategy
+Master File Reference (List of INIs)
+ 
+
+Reviewing the Chapter
+Review Questions
+
+Fill in the blanks:  Most Epic users log into ___________ to do their jobs. Not every administrative activity is available there, though, so administrators and builders log into ___________ and ___________ to build and configure the system and run utilities. All three of them talk to ___________, Epic's database management system. 
+
+True or False: Administrators in charge of editing master file records can only do so from Text.
+
+Fill in the blanks: Master files contain ___________. If you compare two records in the same master file, you find that the _________ are the same, but the ___________ can be different.
+
+True or False: Every time you edit a record, Chronicles creates a new contact for that record.
+
+Which of the following can you do from Record Viewer? (Choose ALL that apply.)
+a. Edit the values in a record
+b. Filter your view to see only values from a specific contact
+c. Jump from a networked item to the record it uses as a value
+d. Look at all the values of a particular record
+e. Search for all the records that have a particular value in a particular item 
+
+In Text, how can you quickly close a record from any screen?
+
+What key do you press at a master file prompt to quickly access the same record that you last accessed there?
+
+How do you see help text for an item in Text? How do you leave the help text?
+
+What is a category list?
+
+To edit the options in a category list, what information do you need to access that list?
+
+ 
+
+Organize the following from most-general to most-specific.
+Bed
+Department
+Facility
+Location
+Room
+Service Area
+
+
+
+Study Checklist
+
+Make sure you can define the following key terms:
+
+Hyperspace
+
+Chronicles
+
+Classic
+
+Text
+
+Master File
+
+INI
+
+Record
+
+Item
+
+Item number
+
+Value
+
+Contact
+
+Record Viewer
+
+No-add items
+
+Over time items
+
+Clinical Administration
+
+Networked
+
+Category List
+
+Release range
+
+Facility
+
+Service area
+
+Location
+
+Department
+
+Make sure you can perform the following tasks:
+
+Distinguish between Hyperspace and Classic at a glance
+
+Use the Record Viewer
+
+Filter items in Record Viewer to see only "no-add" values, or values associated with a single contact
+
+Find values or items in Record Viewer, using the Jump To field and Ctrl+F feature. 
+
+Log into Text
+
+Navigate menus in Text
+
+Navigate within records in Text
+
+Get help on an item in Text
+
+Look up the INI and item number of an item both Hyperspace and Clinical Administration
+
+Edit the values in a category list
+
+Identify the release range for a category list
+
+Make sure you fully understand and can explain the following concepts:
+
+The structure and relationship of the parts of Chronicles (master file, record, etc.), providing examples of each
+
+For what purpose you should log into Hyperspace vs. Classic vs. Text
+
+The relationship between Hyperspace, Classic, Text, and Chronicles
+
+That a contact represents a meaningful version or event, not just a change
+
+When changes are saved in Text
+
+That multiple items might share a category list
+
+Why you should be careful not to change the meaning of an existing option in a category list
+
+How the different parts of the facility structure are connected, and what each level represents
+
+Who typically creates records in the facility structure 
+
+Why Willow cares about each type of record in the facility structure
+
+2: Provisioning Pharmacy Staff
+Introduction
+Pharmacy staff need to be able to log into the system and do their jobs. This requires build in Epic for each staff member.
+
+Who does this job?
+
+The security coordinator or security team creates, tracks, and audits the necessary build in Epic. They have the tools and know the strategies to do these tasks.
+Willow analysts can determine what each group of users should and should not be allowed to do. You know the pharmacy needs and workflows.
+Typically, one Willow analyst joins the Security/Provider Workgroup to communicate the pharmacy needs.
+In this lesson you will learn how to create a user account, assign proper security and assign clinical credentials.
+
+Log into Hyperspace as your NEW Pharmacist; Taylor "Monster Last Name" (NEWRX##/train).
+
+You can't! No one has created a User (EMP) record for this user yet!
+ 
+By the End of This Lesson, You Will Be Able to…
+
+Create a User (EMP) record for a member of your pharmacy staff
+Create a Provider (SER) record for a pharmacist
+ 
+
+Creating User (EMP) Records
+Each member of your pharmacy staff who will log in to Epic needs a unique User (EMP) record. This record contains their name, login, password, and security settings.
+
+Example	Taylor is a pharmacist who’s just starting at EHS Hospital. The outpatient pharmacy often has staff shortages, so she will also need to be prepared to cover the outpatient pharmacy. She’ll need to log in to Epic and have the appropriate settings for a pharmacist. She can’t just use a generic “RX Pharmacist” user because we need to track which patients Taylor has looked at and which orders Taylor has verified. She’ll need a unique User (EMP) record as a result.
+ 
+
+To create a new User (EMP) record for a member of your staff:
+
+In Classic, create the new User (EMP) record.
+Give the user a login and temporary password.
+Link the User (EMP) record to an appropriate template.
+Configure the user’s default login department.
+Configure the In Basket classifications the user should belong to.
+If the user provides clinical care or documents in a patient's chart, link the User (EMP) record to their Provider (SER) record. 
+ 
+
+Step 1: Create a New User (EMP) Record
+As an administrator, you can create new User (EMP) records in Classic. To do so:
+
+Log in to Classic as your administrator ADM##/train and go to User Security.
+
+Path: Classic >> search (Ctrl+Space) >> “User Security”
+Create a new User (EMP) record for the new pharmacist on your class info sheet. Her name is Taylor "your assigned MONSTER last name". (Don't assign an ID, let the system do that for you!)
+
+
+
+ 
+
+Step 2: Enter the User’s Login and Password
+On the Basic Information form, you configure:
+
+Status	
+Must be “Active” for a user to log into the system.
+
+Default status for newly created users
+System login	
+ID used to log into the system.
+
+Can be any unique combination of numbers and letters (not case-sensitive)
+Often matches employee’s Windows username
+Users can also login with system-assigned ID
+
+
+Password	
+No initial password is set when the account is created. Administrators must create temporary passwords.
+
+Passwords are case sensitive
+Confirm that your pharmacist is active and can log in with a User ID of “NEWRX##” (replacing ## with the TRN## from your class info sheet).
+
+Give your pharmacist a password of “train” (case sensitive), and enter in a reason of “new user.”
+
+For this class, clear the Expire check box for your Taylor Monster.
+
+By default, when a password is created, it’s temporary and will expire once the user logs in to the system.
+ 
+Step 3: Attach the Appropriate Template
+User (EMP) records have hundreds of settings that control what users can see and do in the system. Most settings are the same for users that have a particular job role. Only a few settings in the record are specific to a staff member.
+
+Example	
+Taylor is primarily a pharmacist at EHS Hospital. When she logs in to Epic, she should see the same startup activities, toolbar buttons, and activities in a patient chart as other pharmacists.
+
+Specific to Taylor are her name, user ID, password, and the fact that she primarily works in the EMH IP Pharmacy department (as opposed to a different pharmacy in your system).
+
+Explore the following forms. On each form, notice that none of the fields are populated (but all are editable).
+
+User Roles
+EpicCare Inpatient
+Willow
+Rather than making (and maintaining) settings in individual User (EMP) records, attach a template to a User record. A template is another type of record in the EMP master file. A template contains all the settings shared by a group of users with a particular job.
+
+
+
+Example	Taylor is primarily a pharmacist in the hospital, so the most appropriate template for her is Willow Inpatient Pharmacist Template.
+Go to the Linked Templates form and attach the “TRN2## Willow Inpatient Pharmacist Template” (replacing ## with the TRN## from your class info sheet).
+
+Make it the default template, then click Apply Template.
+
+Effects of Attaching a Template
+Once a template is applied, settings controlled by the template are disabled (grayed-out) in the User (EMP) record and the value from the template displays.
+
+Click Finish to close and save your changes. (Yes, save your work.)
+
+Go back to search (Ctrl+Space) >> "User Security" and edit your NEWRX## user. 
+
+Go back to the following forms. Note that most of the fields are now disabled, and some are populated with settings appropriate for a pharmacist.
+
+User Roles
+EpicCare Inpatient
+Willow
+Write in Workbook	
+If you wanted to change one of these disabled settings, where would you need to change it? Who would be affected by that change?
+
+
+Templates in the Foundation System
+The Foundation System comes with templates for the following Willow users:
+
+Willow Administrator
+Willow Inpatient Pharmacist
+Willow Inpatient Technician
+Willow Inpatient Pharmacist Builder
+Willow Inpatient Charge Supervisor
+Willow Inpatient Management
+Willow Inpatient Student
+Willow Specialty Pharmacist
+Willow Specialty Pharmacy Technician Template
+Willow Medication Management Pharmacist
+Willow Ambulatory Pharmacist
+Willow Ambulatory Technician
+Willow Ambulatory Cashier
+Willow Ambulatory Manager
+Willow Ambulatory Student
+Critical	Templates in the Foundation System are not specific to a particular pharmacy or hospital. You’ll handle hospital-by-hospital differences in the User record (see the next topic).
+Add a Second Template
+Taylor will also need to cover the outpatient pharmacy. This will require a different group of settings to allow her to work in Willow Ambulatory. She’ll need different security class(es), role, etc. You won’t need to create a new User EMP record for Taylor, because more than one User Template can be attached to a user record.
+
+If both templates are used in Hyperspace, the user will have the option to choose which job role to log in with. For example, a pharmacy student working as a pharmacy tech while going to school.
+
+
+
+Taylor will be logging into Hyperspace when working as an inpatient pharmacist and into Willow Ambulatory when working as an outpatient pharmacist. There is an additional setting to make the outpatient pharmacist template only available when logging into Willow Ambulatory.
+
+In Taylor's User record, open the linked templates form.
+
+Just below the user template that you recently added, add TRN2## WILLOW AMBULATORY PHARAMACIST TEMPLATE.
+
+In the box on the right labeled Login Types (Row 2), choose Willow Ambulatory,
+
+If the box is labeled "Login Types (Row 1), make sure to select the second row on the template table first.
+
+
+DO NOT click Apply Template. The system will automatically switch the template settings when we log into Willow Ambulatory.
+
+ 
+
+Step 4: Set the User’s Default Login Department
+Templates allow you to assign settings based on job role, but users also need some location-specific settings. These settings are configured in each individual User (EMP) record.
+
+The most obvious hospital-to-hospital difference is the default login department.
+
+Example	Taylor is primarily a pharmacist at EHS Hospital, so her default login department should be EMH IP Pharmacy.
+Expand the Hyperspace/Shared form and then click the Login Settings form. Give your Taylor Monster a default login department of “EMH IP Pharmacy”.
+
+
+
+Classic >> User Security >> Login Settings form
+
+Beyond the Basics	Willow Ambulatory users will also have a default login department. Willow Ambulatory users cannot login to just any DEP department. They can only login to DEP departments that represent an outpatient pharmacy. Because of this, their default login departments will need to have a linked PHR as the "Login Pharmacy".
+Step 5: Assign In Basket Classifications
+In Basket classifications determine which In Basket messages a user receives and can respond to. They are similar to distribution groups in an email system.
+
+You’ll have different In Basket classifications for pharmacists, technicians, and members of the project team. For the pharmacists and technicians, you’ll create different classifications for each hospital (at least). You generally don’t want the techs in Hospital A working with MAR messages from nurses in Hospital B.
+
+In general, pharmacists should also be able to see messages that have been sent to technicians.
+
+Note that you have to assign all In Basket classifications in the individual User (EMP) record. You can't assign some (like "Rx All Pharmacist") in the template and others in the User (EMP); they must all come from one place or another. 
+
+Example	Taylor is a pharmacist in EMH IP Pharmacy, so she should belong to both the EMH-specific Pharmacists and Technicians classifications. She should also belong to the classifications for ALL pharmacists and technicians. When covering the outpatient pharmacy, she'll need access to the Willow Ambulatory Pharmacist and Technician classifications as well.
+Assign users to In Basket classifications in the User (EMP) record, on the In Basket form, in the User classifications field.
+
+Assign your Taylor Monster to the classifications shown below:
+
+
+
+Classic >> User Security >> In Basket form
+
+Click Finish to save changes and CLOSE your user. 
+
+CLOSE YOUR USER RECORD
+
+
+You will be locked out of Hyperspace/WAM as your Taylor Monster if the User EMP record is open in Classic.
+
+Log in to Hyperspace as your Taylor Monster (NEWRX##/train). Confirm that:
+
+EMH IP Pharmacy appears as your default login department.
+You see Patient Lists by default, with the Antimicrobial Stewardship, Clinical Monitoring, and Transitions of Care my lists.
+Your startup activities include the Pharmacist Queue.
+Your main toolbar includes Orders, Order Hx, and My i-Vents.
+Right-click the Clinical Monitoring list and make it your default list. 
+
+Add your Dianita patient to your *Clinical Monitoring list. (Hint: select the list, click Add Patient).
+
+Open Dianita’s chart.  Your activity tabs include Medications, Notes, MAR, Orders, and Verify Orders.
+
+CLOSE HER CHART and LOG OUT
+
+Log into Willow Ambulatory as Taylor Monster (NEWRX##/train). Search for and choose EMC PRESCRIPTION NORTH login department.
+
+Wait a second, why didn't she have a default login department in Willow Ambulatory?
+A user can only have one default login department. Taylor's default EMH IP PHARMACY is not available in WAM because it is not an outpatient pharmacy.
+Fortunately, the system will remember the login department we chose the last time we logged in.
+Verify that you were able to successfully log into Willow Ambulatory and see work queues on the left hand side of the screen such as; Ready to Verify, Clinical Review, All Pharmacist Work, etc.
+
+LOG OUT
+
+Beyond the Basics: Distribution Schemes and Pools
+When nurses send messages from the MAR, they are routed to recipients based on a series of Distribution Scheme (HDR) records. For example, a MAR message with a reason of “Barcode Doesn’t Scan” gets routed to the Willow project team, while a message with a reason of “Request Dose” gets routed to a pool for pharmacy technicians.
+
+Distribution schemes don’t send messages to In Basket classifications—they send messages to pools. A pool is like a workqueue: messages sent to a pool appear to everyone who’s part of it, but they disappear when anyone marks them as “done.”
+
+For each hospital, you’ll typically have a pool that corresponds to each In Basket classification. Once these pools have been created, you then need to add them to the appropriate Distribution Scheme (HDR) record(s) and indicate in which conditions messages should be sent to each pool.
+
+For more information, see:
+
+galaxy.epic.com >> In Basket Setup and Support Guide on Galaxy
+training.epic.com/CourseCatalog >> CLN2120v In Basket Configuration badge
+Provider (SER) Records
+ A User (EMP) record and its linked template determines what a user sees and can do in Hyperspace. But if the user is a clinician who documents in patient charts or enters orders, they also need a Provider (SER) record.
+
+Each Provider (SER) record represents a specific individual. The record contains the type of provider they are, the credentials that should appear at the end of their name, and whether they are considered an “ordering” and/or “authorizing” provider. This Provider (SER) record is then linked to the correct user’s User (EMP) record.
+
+
+
+ 
+
+Example	In addition to Taylor Monster’s User (EMP) record, she’ll need a Provider (SER) record to indicate that she’s a pharmacist and that she’s not an ordering or authorizing provider.
+Log into Hyperspace as your Taylor Monster (NEWRX##/train)
+
+Log in with the INPATIENT pharmacist job role
+
+The system will default to whichever job role you most recently logged in with. That's convenient for pharmacy users, but something we need to pay attention to as testers.
+
+Go to the Notes activity and click Load All (if you see it). There are two notes. What type of providers wrote those notes?
+
+
+Click New Note and give the note a type of Progress Notes [1]. Enter some text and click Sign.
+
+Your name appears on the new note, but you are NOT identified as a pharmacist.
+Your User (EMP) hasn't been linked a Provider (SER) record!
+Link a Provider (SER) to a User (EMP) Record
+For users that need a Provider record, attach the Provider SER to the User EMP in User Security.
+
+In Classic, open your Taylor Monster's User EMP record.
+
+Path: Classic >> search (Ctrl+Space) >> “User Security” >> Edit existing user >> your NEWRX##.
+Expand the EpicCare form and then click the Provider/Hot-Keys form.
+
+Enter your provider record [Monster, Taylor] in the Link to provider field.
+
+
+
+User Record Editor (EMP), Provider/Hot-Keys form
+
+Click Finish.
+
+CLOSE THE RECORD
+
+In Hyperspace, LOG OUT and log back in as your Taylor Monster (NEWRX##/train).
+
+Write a short Progress Note for your Dianita patient.
+
+You are now identified as a pharmacist, have a service of pharmacy, and your license is displayed after your name!
+What a Provider (SER) Controls
+Example	Taylor Monster's License for Display is currently PharmD. Taylor has asked that you update her license to be more accurate. She is a PharmD PhD.
+Unlike User (EMP) records, Provider (SER) records are created in Text. To edit a provider, go to Text >> Clinical Administration >> Users, Providers >> Providers (SER).
+
+Navigate to the Provider prompt and enter TRN## Taylor Monster, and press Enter.
+
+Open the most recent contact.
+Before you make any changes for Taylor, investigate the record.
+
+ 
+
+Provider Type
+TRAINER DEMO: Watch as your trainer logs into Hyperspace as their Taylor Monster NEWRX##/train.
+
+Remain in Text to view your Taylor Monster Provider Record.
+Confirm that Taylor's Provider Type is Pharmacist.
+
+When you write a note, the Author Type is determined by this field.
+Critical	The Provider Type field is more important than it looks! A number of features in the system (such as reports, BestPractice Advisories or Medication Warnings) can be assigned or triggered based on provider type. Leave this field blank and your providers might not see everything they should!
+ 
+
+TRAINER DEMO: Watch as your Trainer writes a new progress note for Dianita. 
+
+Taylor's new note has an author type of Pharmacist.
+Referral Source Type & Scheduling Type
+Epic uses records in the Provider (SER) master file for lots of things, such as tracking referrals and scheduling appointments with patients. Anyone (or thing, such as an imaging device) that generates referrals, or gets scheduled with patients, needs a Provider (SER) record.
+
+Pharmacists don’t write referrals or have scheduled appointments, but you still need to configure the related fields. Why? Because they are required. You can’t leave this screen of a Provider (SER) record without filling them in. For most pharmacy staff, their Scheduling Type  should be Person and their Ref Src Type should be Non Referral Source.
+
+
+
+"Why do I indicate that the user is a person?" Because we use SER records to schedule resources like MRI machines with patients.
+
+Confirm that Taylor has the appropriate Scheduling Type and Referral Source Type.
+
+License for Display
+Whenever a user with a Provider (SER) record documents in a patient’s chart (for example, marking medications or allergies as reviewed or writing a note), the system will display the license at the end of their name.
+
+TRAINER DEMO: Watch as your trainer points out Taylor's license displayed on their most recent progress note.
+
+Taylor's current license for display is PharmD. Taylor (casually) mentioned that she in-fact has a PharmD PhD.
+Navigate to the Credentials and Certifications screen (4 pages down) and enter “PharmD PhD” in the License for Display field.
+
+
+
+Beyond the Basics	The choices for the License to Display field are controlled by a category list (SER 6000). To add a choice to this list, edit the category list.
+Ordering Privileges
+In Willow Inpatient Fundamentals, you frequently used the Providers window to indicate on whose behalf you were entering an order. You chose an order mode, ordering provider, and authorizing provider.
+
+Beyond the Basics	
+Industry Context: Ordering vs. Authorizing Providers
+
+The Ordering provider is the person who “wrote” or originated the order, usually a physician, resident, physician assistant, or nurse practitioner. Nurses can initiate certain orders. In most states, pharmacists are not licensed to write orders (even if they can modify or change orders by protocol).
+
+The Authorizing Providers fields indicate who is ultimately responsible for the orders. In the U.S., this is always a physician. If the ordering provider is a nurse or advanced practice provider (resident, physician assistant, nurse practitioner, etc.), the authorizing provider will usually be the patient’s attending physician.
+
+The Ordering provider and Authorizing Providers fields are populated by records in the Provider (SER) master file. When you create a Provider (SER) record, you must indicate whether their name should be allowed as choices in those fields.
+
+As a general rule:
+
+Pharmacists are not authorizing providers for either medications or non-medication (procedure) orders, so enter “No” in both the Meds Authorizing Provider? and Procs Authorizing Provider? fields.
+In most states, pharmacists are not licensed to write orders. To reflect this, enter “No” in the Inpatient Ordering Provider? and Outpatient Ordering Provider? fields.
+If your state does license pharmacists to initiate orders outside of protocols, change the above fields to “Yes.” Restrict this permission to only certain locations in the Authorized Locations field.
+TRAINER DEMO: Watch as your trainer signs an order for acetaminophen in Dianita's chart.
+
+Taylor must indicate the ordering and authorizing provider for the order.
+Navigate to the Proxy Provider Information screen (3 pages down). Confirm that Taylor does NOT have ordering and authorizing privileges for inpatient and outpatients meds and orders.
+
+The Pharmacist? field is used by Willow Ambulatory as a discrete way to report that pharmacists are clinically reviewing scripts being filled by the pharmacy. Confirm that this field is set to "yes".
+
+
+
+Beyond the Basics	For Willow Inpatient, you don't need to configure the Pharmacist? field, but it just makes sense to say "Yes, this pharmacist is a pharmacist."
+A Service of "Pharmacy"
+When clinicians write clinical notes in the patient’s chart, the notes get stamped with a service (such as “Internal Medicine” or “Cardiology”). The notes that pharmacists write should appear with a service of “Pharmacy.”
+
+Navigate to the Inpatient Provider Information 2 screen (10 pages down). Confirm that Taylor's record has the following:
+
+Allowed Clinical Services: Pharmacy
+Default Clinical Service: Pharmacy
+TRAINER DEMO: Watch as your trainer points out Taylor's service of "pharmacy" on their most recent progress note in Dianita's chart.
+
+Close the record (Shift+F7).
+
+Importing Users & Providers
+Any given hospital might have a few dozen—or a few hundred—users to provision. At a larger organization with multiple hospitals, you might be talking about well over a thousand Willow users.
+
+Rather than creating the User (EMP) and Provider (SER) records for each of these people from scratch, they can be built on a spreadsheet and the data imported into Chronicles.
+
+
+
+This technique can be used with many different master files. For Willow, it is quite common to import/export Medication (ERX) records, Medication List (EFY) records, and Pharmacy (PHR) records to build or make changes.
+
+Beyond the Basics	
+To learn more about importing, see these resources:
+
+GEN3000i Core Analyst Badge – hands on practice with analyst skills that apply across applications
+Standard Import Guide (available on galaxy.epic.com)
+TEC600 Creating Import Spreadsheets and TEC602 Chronicles Imports (available at weLearning.epic.com)
+ 
+
+Migrating Data
+Data migration is the process of copying new or modified records from one environment to another after you have modified, built, or imported records.
+
+First, look at an example of environment strategy. Typically build starts in a proof-of-concept (POC) environment and is migrated to a testing environment. Once tested, the data is migrated to the training environment and the production environment (the live environment used by end-users).
+
+
+
+Data Courier automates the process of migrating build data, making it safer and easier to manage. Data Courier uses Community IDs (CID) to identify records, instead of the local .1 (the ID in Chronicles); this prevents issues when the .1 doesn’t match across environments. The CID is unique and shared across all environments that use Data Courier. Data Courier also uses CIDs to ensure referential integrity—migrated records will remain networked to the correct records even if those records have different local IDs in different environments. 
+
+Data Courier only works with master files that have Data Courier enabled and is designed to transmit static data, not dynamic data.
+
+To learn more about Data Courier, see the DC101v Data Courier Mover badge. 
+
+Reviewing the Chapter
+Review Questions
+
+True or False: A template may be shared among many User (EMP) records, but a User (EMP) record may only have one template.
+
+When provisioning a pharmacist, why do you create and link together a User (EMP) record and a Provider (SER) record?
+
+Why is it important to assign the correct In Basket classification to your pharmacy staff?
+
+You’ve updated an import spreadsheet to create all of the pharmacy technician User (EMP) records at your organization in preparation for go-live. At which point will you use Data Courier? (Choose ALL that apply.)
+A. To import the data into POC
+B. To migrate the data into Test
+C. To migrate the data into Production when testing is complete
+D. To migrate the data out of Production when updates need to be made
+
+ 
+
+Study Checklist
+
+Make sure you can define the following key terms:
+
+User (EMP) record
+
+User template
+
+Provider (SER) record
+
+In Basket classification
+
+Import spreadsheet
+
+Data migration
+
+POC, Test, Production
+
+Data Courier
+
+CID
+
+Make sure you can perform the following tasks:
+
+Create a User (EMP) record
+
+Attach a User (EMP) record to a User template
+
+Add a default log in department to a User (EMP) record
+
+Add In Basket classifications to a User (EMP) record
+
+Create and configure a Provider (SER) record for a pharmacist
+
+Link a User (EMP) record to a Provider (SER) record
+
+Make sure you fully understand and can explain the following concepts:
+
+Who needs a User (EMP) record
+
+The purpose of User templates
+
+Who settings in a template and individual User (EMP) records interact
+
+Why various users need different In Basket classifications
+
+Who needs a Provider (SER) record
+
+What settings are made in a Provider (SER) record vs. in a User (EMP) record
+
+Why a Provider (SER) record is linked to a User (EMP) record
+
+When you might want to import records rather than build them manually
+
+Why you build in POC instead of Production
+
+The process for moving build from POC to Production
+
+What type of data the Data Courier can move
+
+3: Adjusting System Access
+Introduction
+You may find that your users need to do things in Epic that they can’t, or shouldn’t be able to do something that they can. Your organization may not use certain functionality in Epic, or the scope of practice for your users might be different than what the Foundation System assumes. When this happens, you need to adjust users’ access to the system.
+
+Security points control access to activities and functionality in Epic. Security points are assigned to User (EMP) Template records via security classes. In this chapter you will learn how to adjust system access by identifying security point(s) that control access to functionality/activities and adding or removing them from the appropriate security class.
+
+By the End of This Lesson, You Will Be Able to…
+
+Grant access to a specific activity or function to a group of users
+Remove access to a specific activity or function from a group of users
+Use Epic’s documentation tools to research specific pieces of functionality
+ 
+
+Security Structure
+Access to activities and functionality in Epic is controlled by security points. There are thousands of security points used by Epic’s various applications, and any given user might need a few hundred specific points.
+
+Security points are grouped into security classes which are appropriate for a particular group of users. The security class is attached to the template that represents that group. Security classes can be shared between multiple User templates, or specific to a single template.
+
+Example	
+Most inpatient pharmacists need access to the same pieces of Willow functionality, so they all share a Willow security class. This security class is attached to the Willow Inpatient Pharmacist Template.
+
+Taylor will work in both an inpatient pharmacy and an outpatient pharmacy. This means that her system access needs will vary depending on where she is working. We attached two templates to her user record in an earlier chapter, and indicated that one of them will be used when she logs into Willow Ambulatory. Her Willow Ambulatory Template is attached to a different Willow Security Class that is shared with other outpatient pharmacists.
+
+ 
+
+
+
+Some security points control access to entire activities.
+
+Example	
+Inpatient
+
+The Verify Orders activity is controlled by Willow security point 1 – Verify Orders. Pharmacists and Willow project team members have this security point and can therefore use the Verify Orders activity. Technicians don’t have this security point, so they don’t have the activity.
+
+Outpatient
+
+Medication Inquiry is controlled by Willow security point 267. Users with this security point can search for the cash price of a medication. Most outpatient pharmacy staff should be able to inquire about medication costs.
+
+Inventory
+
+Willow security point 42 gives users access to the Update Balances activity. That should only be available to users who monitor inventory for the pharmacy. For example, a cashier would likely not have this security point if they are not responsible for monitoring inventory.
+
+Other security points control discrete functionality within an activity. Typically this functionality appears within multiple activities. Someone might have access to one or more of these activities, but not have access to the specific piece of functionality. Likewise, a user might have the security point for the specific piece of functionality but not all the activities in which it can be used.
+
+Example	
+Inpatient
+
+The ability to manually dispense a dose of a medication order is controlled by Willow security point 7 – Dispense order. If a user has that security point, they can click the Dispense button in the Medications activity, the Order Hx activity, or the In Basket. But a user could have access to the In Basket and not have Willow security point 7. This means they could read In Basket messages but they wouldn’t see the Dispense button on any medication messages.
+
+Allergies
+
+A user could have EpicCare Ambulatory security point 42, allowing them to access the allergies activity of a patient's chart to view a patient's allergies.
+
+That same user might not have the security to reconcile allergies/mark allergies as reviewed within the allergies activity. That would require an additional security point.
+
+ 
+
+Editing a Willow Security Class
+Many of the security points you’ll need to add or remove from your pharmacy users are Willow security points.
+
+Example	Willow Security classes control access to features/activities within both Willow Inpatient and Willow Ambulatory. Let's imagine that your organization went live with both Willow Inpatient and Willow Ambulatory two days ago. Pharmacists are noticing that their access in the system is not what they were expecting. You decide to investigate.
+If you are working on a Willow Inpatient track, follow the steps in exercise 1.
+
+If you are working on a Willow Ambulatory track, follow the steps in exercise 2.
+
+Exercise 1: Edit Your Pharmacist's Willow Security Class (Willow Inpatient)
+Example	
+Let's imagine that you've been receiving reports that your pharmacists do not have the correct access in the system. Someone made some "mistakes" while making the shared security class.
+
+Pharmacists would like to document when orders leave the pharmacy if a tech isn't available. They currently cannot.
+
+Your leadership has decided that pharmacy managers will be in charge of adding, removing, and changing the steps that your technicians will complete when they preparing compounded medications. Your pharmacists should not able to do this. They currently can.
+
+Part 1: Confirm Your Pharmacist's Current Access
+
+Log into Hyperspace as your Taylor Monster (NEWRX##/train)
+Click the Pharmacy button to open the drop-down menu, and select Dispense Tracking.
+Is your pharmacist able to select Dispense tracking from the dropdown? 
+Is your pharmacist able to find it through Epic >> Search? 
+Click into the Search button at the top of your screen (or press CTRL + Spacebar). Search for Pharmacy Workflow Configuration.
+Does your pharmacist have access to this activity? 
+Part 2: Identify Your Pharmacist's Security Class
+
+Before you make any changes to a Security Class, you need to know which class to edit. You want this change to affect all of your inpatient pharmacists, and only your inpatient pharmacists.
+
+We know that there is a shared Security Class for just your inpatient pharmacists. How is that security class attached to a user?
+
+
+Log into Classic as your administrator ADM##/train.
+Open your Taylor Monster's User's Record (NEWRX##).
+Hint: User Security
+Navigate to the Linked Templates form.
+Select the Willow Inpatient Pharmacist Template. Click Open Template.
+Accept the most recent contact.
+Navigate to the Willow form.
+Make note of the name and ID of the Default Security Class 
+CLOSE THE RECORD
+Part 3: Edit Your Pharmacist's Willow Security Class
+
+Now that you know which Security Class to edit, you can remove and add the appropriate Security Points.
+
+Open the Willow Security Class you wrote down above.
+Main toolbar >> Rx Admin >> Willow Security >> Search for the security class.
+You see a list of Security Points that this class contains (the ones that say "yes")
+Before you make changes, confirm that this Security Class is affecting only the users you want to affect. Go the Usage Report tab.
+This shows the templates and individual users that affected by this Security Class.
+Expand the Linkable Templates and Users section. Confirm that only your TRN## ASSIGNED TEMPLATE and your ASSIGNED USER will be affected.
+In the real world, there might be multiple templates using a Security Class. There would almost always be many users.
+Go back to the Security Points tab.
+Set Security Points 52 Receive Dispenses and 53 Send Dispenses to "Yes". Use the Filter Security Points search bar to find it easily.
+Set Security Point 527 Edit Pharmacy Workflow Configuration to "No".
+Click Accept to save your work and close this record.
+Part 4: Test Your Work
+
+LOG OUT and log back into Hyperspace as your Taylor Monster.
+Click the Pharmacy button. Confirm that Dispense Tracking appears in the drop-down menu.
+Your pharmacist now has access to this activity!
+Click into the Search button at the top of your screen (or press CTRL + Spacebar). Search for Pharmacy Workflow Configuration.
+Confirm that your pharmacist does not have access to this activity.
+Part 5: Document Your Findings
+
+How does a security class get attached to a user?
+
+How can you tell what templates and users will be affected by changing a security class?
+
+Imagine that your organization does a tech-check-tech workflow, and so you want all your technicians to have access to the Dispense Checking and Compound and Repackaging Check activities. Which of the follow would you need to EDIT?
+Each technician's User (EMP) record
+The Willow Inpatient Technician Template record
+The Rx Technician Security Class record
+All of the above
+
+After you change a Security Class in Classic, what should you do in Hyperspace/Willow Ambulatory to test those changes?
+
+True or False: If you don't have security for an activity, the buttons/menu options for don't appear and you can't find it by searching the Epic menu. 
+
+Exercise 2: Edit Your Pharmacist's Willow Security Class (Willow Ambulatory)
+Example	
+Let's imagine that you've been receiving reports that your pharmacists do not have the correct access in the system. Someone made some "mistakes" while making the shared security class.
+
+Pharmacists need to access prescription history, you know, to review the history of a prescription. They currently cannot.
+
+Pharmacists should not be able to edit payor sheets. They currently can.
+
+Part 1: Confirm Your Pharmacist's Current Access
+
+Log into Willow Ambulatory as your Taylor Monster (NEWRX##/train) 
+At the login department, select "EMC Prescription North".
+From the Epic button >> admin >> Payer sheet setup
+Is this user able to open payer sheet setup? 
+From the Epic button >> Prescription History
+Is this user able to find prescription history from the Epic button?  
+What about the toolbar? 
+Part 2: Identify Your Pharmacist's Security Class 
+
+Before you make any changes to a security class, you need to know which class to edit. You want this change to affect all your outpatient pharmacists, and only your outpatient pharmacists. 
+
+We know that there is a shared security class for just your outpatient pharmacists. How is that security class attached to a user? 
+
+
+Log into Classic as your administrator ADM##/train.
+Open your Taylor pharmacist's User Record (NEWRX##).
+Hint: User Security
+Navigate to the Linked Templates form.
+Select the Willow Ambulatory Pharmacist Template. Click Open Template.
+Accept the most recent contact.
+Navigate the Willow form.
+Make note of the name and ID of the Default Security Class 
+CLOSE THE RECORD.
+Part 2: Edit Your Pharmacist's Willow Security Class
+
+Now that you know which security class to edit, you can remove and add the appropriate security points.
+
+Open the Willow Security Class you wrote down above.
+Main toolbar >> Rx Admin >> Willow Security >> Search for the security class.
+You see a list of security points that this class contains (the ones that say "yes")
+Before you make changes, confirm that this security class is affecting only the users you want to affect. Go the Usage Report tab. 
+This shows the templates and individual users that affected by this security class.
+Expand the Linkable Templates and Users section. Confirm that only your TRN2## Willow Ambulatory Pharmacist Template and your Taylor pharmacist will be affected.  
+In the real world, there might be multiple templates using a security class. There would almost always be many users. 
+Go back to the Security Points tab. 
+Set Security point 595 Payor Sheet Admin to "No". Use the Search bar to find it easily.
+Set security point 201 Prescription History to "Yes". 
+Click Accept to save your work and close this record.
+Part 4: Test Your Work
+
+Exit (don't just log out, actually EXIT) Willow Ambulatory.
+Launch Willow Ambulatory again and log in as your Taylor Monster (NEWRX##/train), still in EMC Prescription North.
+Epic button >> Admin >> Payer sheet Admin
+Confirm that you do NOT have access to this activity.
+Epic >> Prescription History
+​​​​​​​​​​​​​​Confirm that you have access to Prescription History.
+Confirm that it is available from the toolbar.
+Part 5: Document Your Findings
+
+How does a security class get attached to a user? 
+
+How can you tell what templates and users will be affected by changing a security class?
+
+Imagine that your organization does a tech-check-tech workflow, and so you want all your technicians to have access to the Dispense Checking and Compound and Repackaging Check activities. Which of the follow would you need to EDIT? 
+Each technician's User (EMP) record
+The Willow Inpatient Technician template record
+The Rx Technician security class record
+All of the above
+
+After you change a security class in Classic, what should you do in Hyperspace/Willow Ambulatory to test those changes?
+
+If You Have Time: Explore More
+Critical	This exercise assumes that you have completed all steps in lesson 2, Provisioning Pharmacy Staff. Steps will only work as written after completing lesson 2.
+Part 6: Run a Report to See Who Has a Security Class
+
+The Usage Report tab will show you which templates and which users are affected by a security class, but the list of users caps out at 100. If you want a complete list of users affected by a security class, you can use a Reporting Workbench report. 
+
+Log into Classic as your administrator ADM##/train.
+Open the PHARMACY EPIC STAFF [48999] Willow security class.
+Hint: Classic >> main toolbar >> Rx Admin >> Willow Security
+The record is locked, because it's an Epic-released record. That means it's part of Epic's standard code, and you can't edit it. 
+That’s OK! We're not here to edit it. 
+Go to the Usage Report tab.
+How many active Linkable Templates (EMP) use this security class? 
+How many users would be affected if you edited this security class? 
+Expand the list of active users.
+The list is truncated, because so many users are affected by this security class.
+To see a full list, you’ll need to use the Reporting Workbench.
+Click here:
+
+
+Search for and add the criteria as follows:
+User record type: User
+Willow sec class: PHARMACY EPIC STAFF [48999]
+(Hint: use the Search field to find these criteria!)
+Record status: equal to "Active"
+Confirm the Report Logic at the bottom is AND.
+Run the report to see all of the users affected by this security class.
+Confirm that your administrator (Morgan <lastname>) is here:
+Click Filter at the top left.
+Choose a column to filter: User Name
+Contains: your assigned last name
+Click Accept. 
+Confirm that your <Lastname>, Morgan appears on the results. 
+Close the Reports tab and the security class editor. 
+ 
+Part 7: Explore Other Types of Security Classes
+
+The Willow security class controls access to Willow-specific activities, such as Dispense Preparation or Compounding and Repackaging. But what about other activities? Let's explore! 
+
+Go back to Hyperspace and LOG OUT. Log in as your technician (TECH##/train).
+Go to Patient Lists. Add Dianita to your !My List.
+Open Dianita's chart and go to the Chart Review activity tab.
+Sure enough, you can see her full medical record as a technician. 
+Imagine that a supervisor was concerned. "They don't need this much access, and it's privacy risk for them to have it!"
+Regardless of whether you agree, how would we remove the activity? We'd have to remove a security  from the correct security .
+Go back to Classic.
+Open your technician's User (EMP) record (Ctrl+Space >> "User Security").
+On the Snapshot form, use Ctrl+F find the "Willow Security" section. Close the Find window and scroll down a little. Click the TRN## RX TECHNICIAN (WILLOW) link. 
+You're editing the technician's Willow security class. Does it contain a security point for "Chart Review"? 
+HINT: Use the search field. Search for "chart review". 
+As long as you're here, search for "16".
+You see Willow security point 16, for Autoverify All New Orders. 
+Your technicians don't have that security point (and shouldn't), but make a mental note that 16 = Autoverify All New Orders. 
+Close this security class record and return to the tech's user record.
+On the Snapshot form, scroll up through the report.
+As you scroll up, notice the following:
+My Chart Security shows a default security class of "MyChart Power User"
+Mobile Applications Security shows a security class of "Rover Rx Technician"
+Infection and Isolation Security shows a security class of "Infections and Isolations Add/Remove Isolations Only"
+EpicCare Inpatient Security shows a default security class of "Rx Technician"
+EpicCare Security shows a default application security class of "TRN## Rx Technician (EpicCare)"
+Each of these is a Security Class (ECL) record, but each is a different type of security class, with a different set of potential security points.
+In the EpicCare Security section, click the TRN## RX TECHNICIAN (EPICCARE) link to edit that security class.
+Does this security class have a point for "Chart Review?" Which one? 
+What did that number represent on the Willow security class? 
+The same number controls access to different functionality in different types of security classes!
+Change the Chart Review security point to "No".
+Accept your changes and close your tech's user record.
+Back in Hyperspace, LOG OUT and log back in as your technician (TECH##/train).
+Go to Patient Lists and open Dianita's chart.
+Confirm that Chart Review is no longer there. 
+Key Takeaways
+ 
+
+Identifying Which Security Class to Edit
+
+Before you can add or remove Willow security points, you need to identify which Willow security class is affecting that group of users. To do this:
+
+Log into Classic as an administrator.
+Search (CTRL+SPACE) >> “User Security”
+Look up a user record that represents the group you want to edit.
+Either:
+Go to the Willow form on the left, and find the Default security class there, or...
+On the Snapshot form, scroll down to the Willow Security section and find the default security class there. 
+For other types of security classes, use the process above but replace "Willow" with the type of security class. For example, to identify the EpicCare security class affecting a user, go to the EpicCare form instead of the Willow form, or search the Snapshot for "EpicCare Security". 
+
+ 
+
+Determining Who Will be Affected by Changes
+
+Multiple templates can be linked to a single security class, and many users can be linked to a single template. Changes to a security class can affect a large number of users—and it’s not always obvious who those users are.
+
+Before you change a security class, review which users and templates will be affected by the change:
+
+Classic >> Rx Admin >> Willow Security.
+For other types of security classes, go to search (CTRL+SPACE) >> "Security Class Editor".
+Open the security class.
+Select the Usage Report tab.
+This tab displays all affected Linkable Templates and Users (up to a maximum of 100 of each).
+The see the full list of affected users (if more than 100), click the Security - Users link to run a Reporting Workbench report. 
+ 
+Editing a Security Class
+
+After reviewing the affected users, add and remove the appropriate security points on the Security Points tab.
+
+Toggle points from "Yes" to "No" (or vice versa)
+Use the Filter security points field to search for points by name, description, or number
+Select a security point to read a description of what it does
+Click Accept when done
+Test your changes in Hyperspace by logging out and logging in as an affected user. 
+
+Beyond the Basics	
+What Does the “Security Level” Field Do?
+
+The Security Level field in a security class record is used to control which administrators can edit or assign different security classes.
+
+You can assign security classes that have a security level equal to or less than your security level.
+You can edit security classes that have a security level less than (not equal to) your security level.
+Note that in order to edit any Willow security class, you need Willow security point 508 – Security Class Admin.
+
+Adjusting Access for a Subset of Users
+Changing the security points on a security class, changes the access of every user linked to a template that uses that security class.
+
+Example	Earlier, you saw that your pharmacist security class only affected one user, your Taylor Monster. But in the real world, all your pharmacists would share a single template, and thus share a single Willow security class. Your changes would have affected every pharmacist.
+
+
+If you want to change security for a subset of users within a group, things get more complicated. That's because:
+
+You can’t assign individual security points directly to individual users. All security points must be assigned via security classes. 
+Each template (and thus each user) can be linked to only one of each type of security class. 
+Thus, any given user must get all their Willow security points from one and only one Willow security class. If you have two groups who need access to a similar-but-not-identical set of activities, then you need two separate security classes. 
+
+Example	
+Let's imagine a different scenario.
+
+Your organization decides only a handful of lead technicians should have access to the Label Printer Rerouting activity.
+
+You can’t give that security point directly to individual users, so you need to create a new version of the RX TECHNICIAN Willow security class that all technicians share. You will add the Label Printer Rerouting security point to the new security class, and then create a new template for technicians that use that security class instead of the existing one. You will then link the trusted techs to the new template.
+
+Duplicate the security classes that need to be different.
+Add and remove security points from the new, duplicated security classes.
+Create a new User template, copy settings from an existing, similar security class, and change the default security class field to use your new security class assigned.
+Attach the new template to the appropriate users.
+
+
+Critical	
+Whenever possible, avoid making new security classes (and thus new templates) to accommodate niche needs. While the steps above might not be hard to do, they make the system harder to maintain. If you later decided to give a new security point to technicians, you'd have to remember to edit two security classes instead of just one. If you later decided to change a setting in the technician's template, you'd have to remember to change both templates (techs and tech leaders). 
+
+Standardize as much as possible to make maintenance easier!
+
+Beyond the Basics	
+Subtemplates
+
+A subtemplate is a way to override certain settings from a user’s linked template. You might use a subtemplate if the change is a small, focused change for a very small population, and doesn’t constitute an official role difference. While useful, they can be a bit more complicated to use troubleshoot.
+
+To learn more, search for “Creating and Applying Subtemplates” in Galaxy.
+
+ 
+
+Editing Other Types of Security Classes
+The Willow security class is just one of many types of security classes that each User template links to. A pharmacy user will likely have at least the following security classes:
+
+Willow	Pharmacy-specific functionality
+Inpatient	Activities and functions within an admitted patient’s chart (e.g. MAR, Medications, Notes, Orders)
+EpicCare	Activities and functions in outpatient chart, and "common" clinical functionality (like Chart Review or the ability to sign medication orders)
+Shared	Tools that any user (including non-clinical users) might use, such as SmartPhrases and Phone Book
+In Basket	In Basket and features within it
+Reporting Workbench	View, run, edit, and create Reporting Workbench reports
+ 
+
+
+
+Beyond the Basics	To figure out which type of security class a specific security point is in, use Epic’s Security Point Dictionary on Galaxy. You can search through this spreadsheet using Ctrl+F. Be sure to choose Options >> Within: Workbook before completing your search so that you are searching the entire spreadsheet.
+Reviewing the Chapter
+Review Questions
+
+True or False: Each security point grants users access to one entire activity.
+
+How does a security class get attached to a user?
+
+How can you tell what templates and users will be affected by changing a security class?
+
+True or False: If you don't have security for an activity, the buttons/menu options will be grayed out (disabled) but visible.
+
+A new feature is released, and you want all your technicians and pharmacists to have access to it. It's controlled by Willow security point 999. Which of the following records do you need to EDIT to make this happen?
+a. The pharmacists' individual User (EMP) records
+b. The pharmacists' template
+c. The pharmacists' Willow security class
+d. The technicians' individual User (EMP) records
+e. The technicians' template
+f. The technicians' Willow security class
+
+Normally pharmacists in your hospital don’t have the ability to edit and create SmartTexts, but you would like a few particular pharmacists to have that ability. This is controlled by point 11 on the Shared type of security class. Pharmacists currently all use the Rx Shared Pharmacist security class record, which does not currently have point 11. 
+
+Which of these do you need to do? (Choose ALL that apply.)
+a. Add point 11 to the Rx Shared Pharmacist security class.
+b. Duplicate the Rx Shared Pharmacist security class and add point 11 to the duplicate.
+c. Create a new template (copying settings from the existing pharmacist template), and attach the particular pharmacists to this new template. 
+
+Name six types of security classes that a Willow Inpatient user is likely to have.
+
+Study Checklist
+
+Make sure you can define the following key terms:
+
+Security Class
+
+Security Point
+
+Make sure you can perform the following tasks:
+
+Identify which Willow security class is affecting a user
+
+Identify all the templates and users affected by a security class
+
+Edit the points that a security class contains
+
+Make sure you fully understand and can explain the following concepts:
+
+The difference between security points and security classes
+
+The relationship between security points, security classes, templates, and users
+
+Why you may need to edit a security class
+
+When you might need to duplicate and edit a security class
+
+4: Changing Startup Activities and Toolbars
+Introduction
+Critical	This lesson assumes that you have completed all steps in lesson 2, Provisioning Pharmacy Staff. Steps will only work as written after completing lesson 2.
+In the previous chapter, you learned how to adjust access to activities and functionality in Epic. But just because you have access to an activity or a piece of functionality doesn’t mean it’s easy to find.
+
+A user's default main toolbars and startup activities in Hyperspace should reflect the activities they're most likely to use.   
+
+The record that we are editing in this chapter only affects what a user sees in Hyperspace, not Willow Ambulatory. Outpatient Pharmacy staff login to hyperspace for certain features, and will need the workspace to be optimized (or at least set up). Willow Ambulatory's toolbar and startup activities are not editable. This is because the toolbar and startup activities already include all the available activities.
+
+
+Startup activities and main toolbar for a pharmacy technician
+
+Log into Hyperspace as your technician (TECH##/train). 
+
+Meanwhile, your instructor will log into Hyperspace as their Taylor Monster (NEWRX##/train).
+Compare your tech's main toolbar to the pharmacist's main toolbar. 
+
+What buttons do you NOT have that the pharmacist does? 
+What buttons do YOU have that the pharmacist does not? 
+Search for "Orders" and "My i-Vents" in the Epic menu.
+
+You can't find them. You don't have access to them, because your technician lacks the security points for those activities.  
+TRAINER DEMO: Watch as your instructor expands the Epic >> Pharmacy menu.
+
+The pharmacist does have Bulk Charge and uLabel Hx activities, because they have security points for them.
+So: having security points for an activity doesn't automatically put it on your main toolbar! Something else must be controlling that.  
+Compare your tech's startup activities to the pharmacist's startup activities.  
+
+What startup activities do you NOT have that the pharmacist does? 
+Search for "Pharmacist Queue" in the Epic menu.
+
+Your technician does have access to the Pharmacist Queue activity, meaning you have the security point for it. 
+So: having security points for an activity doesn't automatically make it a startup activity. Something else must be controlling that, too! 
+ 
+
+By the End of This Lesson, You Will Be Able to…
+
+Name the thing that controls the startup activities and main toolbar
+Identify a user’s Role (E2R) record
+Explain how a Role (E2R) record gets assigned to a user
+ 
+
+What Controls Startup Activities and Toolbars?
+The startup activities and main toolbar in hyperspace are configured by a user’s Role (E2R) record. Roles are records that control the layout and rules of Hyperspace. Each user template is linked to a role. Like security classes, each role is generally used by only one template, though multiple templates can share a role.
+
+Also like security classes, changes to a Role (E2R) record will affect every user who uses that record. 
+
+Critical	If you don't have the security point for an activity, your Role (E2R) can't make it a button or a startup activity. You must have access (security) to an activity first!
+
+
+Beyond the Basics	
+Don’t let the name confuse you!
+
+A Role (E2R) record is really just a record that configures Hyperspace for a group of users. Yes, each Role (E2R) record does apply to a group of users who share the same job description. But a user’s Role (E2R) record is just one setting that such a group would have in common. A Template (EMP) is what defines all the settings a user has that are shared by everyone with that job description.
+
+When you read or hear “Role (E2R),” it’s best to replace it in your mind with “Hyperspace configuration.” That’s what a Role (E2R) record does: it configures Hyperspace. The configuration pertains mostly to what displays outside of a patient chart.
+
+
+You can identify which Role (E2R) record is affecting a user on the User Roles form of a User (EMP) record:
+
+
+
+Classic >> User Security >> User Roles form: the Role (E2R) record that affects this user
+
+Log into Classic as your administrator (ADM##/train). Identify the Role (E2R) record assigned to your pharmacy technician.
+
+Note that the Default user roles field is disabled in this User (EMP) record. What does that mean? Where is this value coming from? 
+
+Technically, a user can be linked to multiple Role (E2R) records, but that’s pretty uncommon and not recommended. If a user is linked to multiple Role (E2R) records, the settings in all of them are applied and in some cases they’ll contradict each other. It’s usually better to create just one Role (E2R) record for a group of users that contains all the necessary settings.
+
+Critical	Users can customize their main toolbar in Hyperspace. These customizations override settings in a user's Role (E2R) record. A user can see their default toolbar options (the ones assigned by their role) in Hyperspace >> Epic button >> My Toolbar Default Items. 
+Beyond the Basics	
+Other Things a Role (E2R) Record Controls
+
+How long Hyperspace must be inactive before timing out, and what happens when the timeout is reached (though this is usually overridden by settings in a workstation record). 
+How many patient charts can be open at once
+The layout of available buttons within some activities in Hyperspace
+Whether the system should use the last login department when a user logs in to Hyperspace, or always revert to the default login department set in the User (EMP) record.  
+If a user is missing a role (because they have no template, or their template has no role), then they will not be able to log into Hyperspace! They'll get an error as soon as they try. 
+
+Beyond the Basics	
+Editing Role (E2R) records is beyond the scope of this class. For more information about roles records, see:
+
+CHR2100 Hyperspace Configuration Badge 
+Security Coordinator training track
+ 
+
+Reviewing the Chapter
+Review Questions
+
+Name two things that are defined by your Role record.
+
+True or False: Making changes to a Role record will affect any users with templates using that Role.
+
+True or False: I can give someone access to an activity using a Role record.
+
+ 
+
+Study Checklist
+
+Make sure you can define the following key terms:
+
+Role (E2R) record
+
+Startup Activity
+
+Main Toolbar
+
+Make sure you can perform the following tasks:
+
+Identify the role linked to a template
+
+Make sure you fully understand and can explain the following concepts:
+
+What aspects of a user’s experience of Hyperspace their Role controls
+
+The relationship between a Role (E2R) record, a template, and a User (EMP) record
+
+Distinguish between what security classes control, and what user's Role (E2R) record controls
+
+5: Configuring Print Group-Based Reports
+Introduction
+Many of the activities in Epic use print group-based Report (LRP) records to display patient information. Each of these Report (LRP) records is composed of a number of Print Group (LPG) records. Print groups are records that pull data from Chronicles and display them in a user-friendly way, and can be added to reports or edited to meet the needs of an organization.
+
+
+
+Patient Summary activity: a print group-based report
+
+Critical	
+Not the same as Reporting Workbench reports!
+
+Print group-based reports are not Reporting Workbench reports. RW reports typically identify all patients who meet certain criteria.
+
+Print group-based reports typically display data within a selected patient’s chart. These reports and their print groups don’t find the patient; they display data about the patient you’ve already found.
+
+ 
+
+By the End of This Lesson, You Will Be Able to…
+
+Edit an existing print group-based report
+Find print groups for use in a report
+ 
+
+Examples of Print Group-based Reports
+Print group-based reports appear in a number of different places. Here are some of the most important examples for Willow.
+
+Summary activity
+
+The whole point of the Summary activity (inside a patient's chart) is to display print group-based reports.  
+
+
+
+Hyperspace >> Summary activity
+
+Sidebar Summary
+
+The Sidebar Summary tab that appears on the right of a patient's chart also displays print group-based reports:
+
+
+
+Hyperspace >> Sidebar Summary
+
+Navigators
+
+Navigators, like the Anticoagulation Navigator used to monitor patients on warfarin and similar medications, can include reports.
+
+
+
+Hyperspace >> more activities >> Anticoagulation Navigator
+
+Prescription Fill History
+
+Reports in Willow Ambulatory like Patient Fill History are print-group based reports.
+
+
+
+Willow Ambulatory >> Select prescription from patient's Med Profile >> click Prescription History
+
+Order Report
+
+When you click an order's name on the MAR, or double-click an order from the Medications activity, or click the report icon next to an active order in the Orders activity, you see an order report.
+
+
+
+Hyperspace >> MAR >> click order name >> Order Report
+
+Patient List Reports
+
+The various monitoring My Lists in the Patient Lists activity each make use of a print-group based report. These reports include print groups that show information relevant to the particular type of monitoring.
+
+
+
+Hyperspace >> Patient Lists >> Clinical Monitoring list >> Clinical Scoring report
+
+SnapShot Activity 
+
+The snapshot activity in Hyperspace and Willow Ambulatory displays reports.
+
+
+
+Editing an Existing Report
+Critical	This lesson assumes that you have completed all steps in lesson 2, Provisioning Pharmacy Staff. Steps will only work as written after completing lesson 2.
+The Foundation System includes a large number of print group-based Report (LRP) records, designed to meet the needs of most users. Each Report (LRP) record links to one or more Print Group (LPG) records.
+
+
+
+You might find a need to add or remove information from one of these existing reports, or change the report’s look or layout. If everyone who uses a report agrees on how that report should change, you can edit the existing report.
+
+To edit an existing report:
+
+Determine how the report needs to change.
+Identify the Report (LRP) record you want to edit.
+Identify (or create) the Print Group (LPG) records to be added (if any).
+In Text, edit the report.
+Add, remove, and reorganize print groups.
+If appropriate, change the stylesheet.
+In Hyperspace, test your changes. 
+ 
+
+Beyond the Basics	When updating build or creating new build, it’s important to keep Usability in mind. Epic maintains a Usability Strategy Handbook help you easily find best practices, and you can also complete the Usability Badge (UX2100). Find both in Galaxy. 
+ 
+
+Step 1: Determine How the Report Needs to Change
+Work with your subject matter experts, super-users, and end-users to determine what information is missing from the report and what information is no longer needed. This will determine which print groups you need to add and remove.
+
+Example	
+A few weeks after go live, your pharmacists ask you to make the following changes to the Rx SnapShot report in the SnapShot activity:
+
+They’d like it to include the patient’s hard copy scans of written scripts.
+They’d like it to include the patient's morphine intake.
+They’d like to shrink the font a little so that more information fits on the screen at once and they don’t have to scroll quite so much.
+All of the pharmacists agree that the changes would be appropriate, so you can just edit the existing RX SnapShot report rather than creating a new one.
+
+Critical	
+Always consider which users will be affected by your build changes. You may be modifying a report that is used by many different groups. If you only want to make a change for a portion of the users, you will need to duplicate the report, make changes to the duplicate, and attach your new version to the subset of users.
+
+This is a similar concept to what we discussed in Chapter 3, Adjusting Access for a Subset of Users. Understand that you can duplicate and modify many different types of records to make changes for a subset of end users. You will learn additional ways to change options for a group of users in Chapter 6, 6: Configuring Options Within Activities.
+
+Step 2: Identify the Report
+Before editing a report, you need to know exactly which report you will edit. To do so, turn on the Report & Print Group Assistant.
+
+Log in to Hyperspace/Willow Ambulatory as a user who can see the report.
+Find the report in Hyperspace.
+In Hyperspace go to Epic >> search >> "Report/HTML Assistance" 
+     3. In Willow Ambulatory: Epic >> Tools >> "Report/HTML Assistance"
+
+A message appears indicating that report assistance is enabled. Click OK.
+The report now displays the IDs and record names of the report and each of its print groups. Note the IDs and record names you need.
+Note that the storyboard also shows a lot of additional information when Report & Print Group Assistant is enabled. Don't worry about it! 
+
+
+To disable Report & Print Group Assistant the same way: go to Epic >> Report/HTML Assistance again. 
+
+Beyond the Basics	
+If you prefer (obscure) keyboard commands, you can use "the Claw" to enable the Report & Print Group Assistant: hold down CTRL+ALT+SHIFT then press F12, followed by F10. On a laptop you might need to hold down the Fn key as well.
+
+On a Mac, hold down Control+Option+Command+Shift+Fn, then press F12, followed by F10. Good luck.
+Yes, this works in both Hyperspace and Willow Ambulatory!
+Log in to Willow Ambulatory (Dept: EMC Prescription North) as your Taylor Monster (NEWRX##) and open Dianita’s chart. Go to the SnapShot activity to view the SnapShot report.
+
+Turn on the Report & Print Group assistant. Note the name and ID of the Overview report.
+
+
+ 
+
+Step 3: Determine Which Print Groups
+To add print groups to a report, you'll need to find or create print groups to meet your needs. There are thousands of standard, Epic-released records in the Print Group (LPG) master file. Choose appropriate print groups by finding them in an existing report or searching the Epic Data Handbook.
+
+There are a few different ways to find an appropriate print group. You could search the Print Group masterfile in Text with a key word, such as "prescription" or "diet". However, you'll likely get a ton of matches, so this isn't the most efficient option.
+
+ 
+
+Identifying a Print Group Already in Use
+If you know which print group you want to add because you’ve seen it elsewhere in Epic, then you can use the Report & Print Group Assistant to find its ID and record name. To do so:
+
+Log in as a user who can view the report.
+Find the print group in Hyperspace.
+Turn on Report & Print Group Assistance, using either:
+Hyperspace >> Epic >> search >> "Report/HTML Assistance"
+Willow Ambulatory  >> Epic >> Tools >> "Report/HTML Assistance"
+The Claw:  Hold Ctrl+Alt+Shift, and press F12 then F10
+Write down the ID and record name of the print group.
+Turn off Report & Print Group Assistance by repeating step 3.
+ 
+
+You remember seeing a morphine related print group in the overview report in Hyperspace.
+
+Log into Hyperspace as your Taylor Monster>> Open Dianita's Chart >> Go to the Summary tab >> Overview Report. Find the ID and name of the Outpatient Morphine Milligram Equivalents Per Day print group
+
+
+Searching for a new Print Group
+The Epic Data Handbook is a searchable tool created by Epic. It contains a list of all Epic-released print groups.
+
+Critical	Employees of Epic’s community members and Epic staff should all have access to the Epic Data Handbook, but some consultants will not have access to this tool.
+To search the Epic Data Handbook for print groups, open a web browser and go to the UserWeb. Log in with your UserWeb account. On the right-hand menu bar, under Documentation, click Print Groups.
+
+Once in the Print Group section of the Epic Data Handbook, search for print groups by keyword. You can also search by application (“Product”), but be aware that Willow often uses print groups that are labeled as “EpicCare Inpatient” or “EpicCare Ambulatory.”
+
+
+
+Epic Data Handbook, Print Groups: searching for print groups
+
+TRAINER DEMO: Watch as your instructor searches the Data Handbook for a print group that shows prescription scans.
+
+TRAINER DEMO: Your trainer will find the print group RX Prescription Scans. This seems like exactly what we want. Your trainer will inspect the details of this print group. 
+
+
+
+Your trainer will point out that this print group is designed to be included in a report specific to just one prescription. We want to see all prescription scans.
+
+TRAINER DEMO: Your trainer will search for the View All Scans print group. In theory, this should show us all scans.
+
+
+
+
+
+Your trainer will point out that this print group is designed for a report that is specific to one encounter. Fortunately, the parameters of the print group could be changed to include all encounters. That is what we want to see!
+
+You should not change the settings of a foundation system print group. You would be changing settings for every report that includes that print group. If you would like to change the parameters, create a duplicate of the print group. Change the settings in the duplicate and it to your report.
+
+
+
+
+
+TRAINER DEMO: Before class, your trainer made a duplicate of this print group and changed the settings to include all encounters and prescription scans.
+
+Take note of the ID 
+
+If you would like to learn more about editing the parameters of a print group, try out the Beyond the Basics: Configuring Print Groups exercise after class.
+
+Step 4: Edit the Report
+Adding and Removing Print Groups
+To edit the print groups in a report: 
+
+Open the report record in Text.
+Path: Text >> Clinical Administration >> Reports, Print Groups >> Reports (LRP)
+Page down four times, to the (second) Report Definition screen.  
+Print groups appear in the column and order you list them. If there are multiple columns, Epic uses the % fields to control how wide Column 1 and Column 2 are (Column 3 uses whatever’s left). If a row has a print group in only the first column, and the % field is blank, then that print group takes up 100% of the report's width.
+
+Setting the Align Print Groups Across All Columns? item to "No" prevents unwanted whitespace between print groups.
+
+
+
+Open your trn2## Rx SnapShot and navigate to the screen above.
+
+To add a new print group:
+
+Navigate your cursor to the row and column where you want the print group to appear.
+Press F7* to insert a blank row. 
+Enter the print group ID or name and press Enter. 
+Enter an appropriate value in the % field
+Tip: match the width(s) of the row above or below, to prevent misalignment and provide visual consistency.​​​​​
+To remove one or more print groups, navigate your cursor to the print group you want to remove and:
+
+Press F2* to delete just that print group, in that column.
+Press F1* to delete the ENTIRE ROW of print groups (WARNING! You cannot undo this with F3.)
+(* On a laptop or Mac, you might need to hold Fn down as well.)
+
+After adding/removing a print group, tab off the field and test your changes in Hyperspace. You do NOT need to Shift+F7 before testing your changes; just be sure to tab off the field to save it. In Hyperspace, right-click the report and choose Refresh. 
+
+Example	
+After conferring with the pharmacists asking for this change, you decide to place:
+
+Outpatient Morphine Milligrams Per Day just below the PDMP Review History print group.
+Prescriptions scans just below the Notifications in the Last 90 days print group.
+Compare your report in Willow Ambulatory (with Report & Print Group Assistance enabled) with the Report Definition screen in Text. Where should you put the Diet Orders print group?
+
+Between rows  and , in column .
+Arrow down to row 14 and press F7 to insert a blank row. Enter 49153 >> Press tab >> Enter 100 >> Close the record.
+
+Test your work so far.
+
+Leave this screen open in Text, but go back to Willow Ambulatory.
+Disable Report & Print Group Assistance (Epic >> Tools >> Report/HTML Assistance).
+Refresh the report.
+Does the Outpatient Morphine... print group appear? Where? Why? Is that good?
+
+Go back to Text. Set print group 49153 to only take up only 60% of the report's width. Tab off the % field when done!
+
+Go back to Willow Ambulatory and refresh the report. Better?
+
+Go back to Text. Carefully arrow down to the last print group (row 16) and press Tab twice to edit in Column 2.
+
+Enter 20552187 and press Enter. 
+
+Why didn't we have to set a percentage for this print group? 
+
+Go back to Willow Ambulatory and refresh the report. Confirm that you see the Prescription scans section at the bottom. Do a little happy-dance.
+
+Changing the Stylesheet of a Report
+The stylesheet of a report determines how the report appears in Hyperspace. There are two main components:
+
+Style: colors, spacing, and layout
+Font size
+Epic releases and maintains a number of main “styles” (such as “Standard” or “Widget”), each of which is available in a number of font sizes.
+
+Path: Text >> Clinical Administration >> Reports, Print Groups >> Reports (LRP) >> Page Down 4 times
+Certain stylesheets are better suited for certain layouts of reports. Likewise, not every print group works well with every stylesheet. If they weren’t specifically designed for a given stylesheet, they might have extra lines, strange wrapping, and/or inconsistent formatting.
+
+When you apply a stylesheet to a report, or a print group to a report that already has a stylesheet, the system checks whether the print groups in the report are certified as compatible with the stylesheet. If they aren’t, you see a warning about potential stylesheet issues.
+
+This warning doesn’t mean that you can’t use the print groups that haven’t been certified for the stylesheet; it means that you should test the report thoroughly to ensure the print groups in question appear as expected.
+
+Back in Text, change your report's stylesheet to "Widget 8pt" [70]. Close your record.
+
+Refresh your report in Willow Ambulatory. Confirm that everything got smaller.
+
+TRAINER DEMO: Watch as your instructor changes their report to use stylesheet "Standard 8pt" [60] and refreshes their report in Willow Ambulatory.
+
+Note that the style of the report completely changes. 
+Your instructor will change their stylesheet back to Widget 8pt [70]. 
+Beyond the Basics: Configuring a Print Group
+In the example above, you added the Outpatient Morphine Milligram Equivalents Per Day print group to your report. But some Epic-released print groups may not work exactly as you like. You can configure many print groups, but doing so requires:
+
+Duplicating the Epic-released print group
+Modifying the parameters of the duplicated print group.
+In your report, swapping out the Epic-released print group for the new, modified print group. 
+After Class Exercise: Configuring Print Groups
+Beyond the Basics	This exercise is beyond the basics. You might find it useful or interesting, but you aren't expected to know this content for your certification. 
+Part 1: Identify the Problem
+Before editing a print group, you must identify what it is you would like to change. Let's imagine that your pharmacists have noticed that the pharmacy related print groups all look the same and aren't easily distinguishable from each other on their SnapShot Report. Earlier, you added the Outpatient Morphine Milligram Equivalents Per Day print group. Now, you'll edit your own copy.
+
+If you aren’t already, login to Willow Ambulatory as your Taylor Monster NEWRX##/train. Open Dianita's chart to the SnapShot Activity.
+Locate the Outpatient Morphine Milligram Equivalents Per Day print group.
+Notice how the four print groups in a row have the exact same theme.
+Part 2: Duplicate the Print Group
+In Text, navigate to Clinical Administration >> Reports, Print Groups >> Dup Print Groups (option 4).
+At the Print Group prompt, enter 49153
+At the New PRINT GROUP ID(.1) prompt, enter “40845265##” (replacing ## with the TRN## from your class info sheet).
+When duplicating records, Epic recommends the following format:
+<3-digit prefix identifying application; “408” for Willow IP>
+<ID of Epic-released record being copied>
+<2-3 digit suffix indicating which copy it is>
+Give your print group a new name: “trn2## RX Morphine Equivalence for Patient (OP)” (replacing ## with the TRN## from your class info sheet).
+At the Continue? prompt, type out “Yes” and press ENTER.
+Page up twice to return to the Reports, Print Groups menu.
+Part 3: Configure the Parameters of the Duplicate Print Group
+Select the Print Groups (LPG) menu (option 3) and open your new trn2## RX Morphine Equivalence for Patient (OP) Print Group.
+Color-Coding can configure the print group's display color. If left blank, the print group's color will be determined by the report.
+
+Navigate to the Color-Coding field.
+Change the color to whatever color you would like (other than purple).
+If you're feeling adventurous, choose an icon in the Icon field.
+Hint: Shift + F5
+More than just the color and icon can be configured in a print group. The parameters of the content in the print group can be configured. The parameters will be different for each print group. In the RX Morphine Equivalence for Patient (OP) print group, the parameters include thresholds and warning limits.
+
+
+
+Page down twice to the Parameters screen.
+These thresholds can be custom set to highlight data that exceeds the threshold.
+
+Arrow down to the Critical Threshold field. 
+To see the effects of this setting, set the Critical Threshold to a number lower than Dianita's current Maximum MME/Day.
+Review Dianita's chart to find her current Maximum MME/Day
+Shift+F7 to close your print group record.
+Part 4: Add Your Print Group to Your Report
+Now that you’ve created and configured your own version of the Diet Orders print group, you need to swap it in for the Epic-released print group that’s currently in your report.
+
+Go to Reports (LRP) and open up your trn2## RXAMB RX PATIENT SNAPSHOT REPORT.
+Replace the Foundation System RX Morphine Equivalence for Patient print with your TRN2## copy.
+HINT: Put your cursor on 49153 and press F2 to delete the values from the cell. Then enter your new print group, using either its name or its ID (not both). 
+Press Shift+F7 to close the report.
+Return to Hyperspace.
+If you aren’t already looking at your trn2## RX Snapshot report, login to Willow Ambulatory as your Taylor Monster, open Dianita’s chart, and go to the SnapShot activity.
+Right-click anywhere in the SnapShot report and choose Refresh. The Outpatient Morphine Equivalents Per Day print group should now have a new color and the Dianita's Maximum MME/Day should be highlighted in red.
+
+
+Color and icon may vary depending on personal preference.
+
+Key Takeaways: Configuring Print Groups
+Beyond the Basics	This section is beyond the basics. You might find it useful or interesting, but you aren't expected to know this content for your certification.
+Duplicate a print group if:
+
+You want to modify the parameters of an Epic-released print group
+You want to make a variant of a print group that is already in use
+ 
+To duplicate a print group: 
+
+Text >> Clinical Administration >> Reports, Print Groups >> Dup Print Group
+Enter the name/ID of the print group to duplicate
+Enter the ID of the new print group
+Yes, give the print group a new name (make its purpose clear)
+ 
+To edit a print group's parameters:
+
+Text >> Clinical Administration >> Reports, Print Groups >> Print Groups (LPG)
+On the Parameters screen:
+Shift+F5 to see what parameter does, how it works
+Press F6 to edit parameters with multiple values
+Be careful! If you edit a print group that is used in multiple Report (LRP) records, you will be affecting how that print group appears in every one of those reports.
+ 
+
+After duplicating a print group (and configuring the duplicate's parameters), add it to the appropriate report (see Editing an Existing Report, earlier in this chapter).  
+
+Reviewing the Chapter
+Review Questions
+
+You’re looking at a report in Hyperspace when you spot a print group that looks wrong. You want to go fix it, but don’t know what the ID number is. How can you find it right from Hyperspace? 
+a) Epic button >> search for "Report/HTML Assistance"
+b) Hold down Ctrl and click on the print group header
+c) Press Home, then press F8
+d) Press Shift+F5
+
+
+You’re wondering if a print group exists that displays all of a patient’s medications for a specific pharmaceutical class. How could you find out?
+
+Your users are complaining that the font on a particular report is too small. How could you increase the font size in the report?
+
+ 
+
+Study Checklist
+
+Make sure you can define the following key terms:
+
+Print Group (LPG)
+
+Report (LRP)
+
+Stylesheet
+
+Make sure you can perform the following tasks:
+
+Find the record ID of Report (LRP) and Print Group (LPG) records that you are viewing in Hyperspace
+
+Turn Report & Print Group Assistance on or off
+
+Find print groups for a report using the Epic Data Handbook
+
+Add or remove print groups to/from a report
+
+Test the changes that you make to a Report (LRP) in Hyperspace
+
+Make sure you understand and can explain the following concepts:
+
+The relationship between Report (LRP) and Print Group (LPG) records
+
+How the settings on the Report Definitions screen of a Report (LPR) record affect how a report appears in Hyperspace
+
+Understand when it is necessary to duplicate a record and make edits to the duplicate, rather than editing the original record
+
+6: Configuring Options Within Activities
+Introduction
+In earlier chapters we discussed that security points allow a user to open and view an activity. We discussed that Role records determine which activities a user would like access quickly. What controls what a user sees once they open an activity?
+
+Epic uses Profile (LPR) records to control options within most clinical activities. Almost every clinical activity within a patient’s chart is affected by profile settings. There are thousands of settings that are controlled by profiles. Here are just a few examples:
+
+Patient Lists	
+Default My Lists, columns users can add to their lists
+
+Available List folders
+
+Default report, available reports, and which reports start as buttons
+
+Summary activity	Default report, available reports, and which reports start as tabs
+MAR	Whether it is read-only, available tabs and the order of those tabs
+Orders	Contents of preference list tab, access to the Database tab, default and available ordering modes
+Flags - WAM	Configure which flags a user is able to resolve in Willow Ambulatory
+Default SnapShot Report	Configure which report the user sees in the SnapShot activity by default.
+ 
+
+By the End of This Lesson, You Will Be Able to…
+
+Explain what type of record controls options within activities
+Identify which Profile (LPR) records might affect a user
+Predict how the Profile (LPR) records affecting a user interact with each other
+Control the reports that appear in the Patient List activity
+Profiles vs. Security Classes vs. Roles
+Let’s make sure we’re clear on how they are different from Security Class (ECL) and Role (E2R) records.
+
+
+
+Critical	
+Security Overrides Profiles!
+
+If you don’t have the security, you’ll never see or access the activity and the options within that activity are irrelevant.
+
+For example: techs share a profile setting with pharmacists that gives them the Database tab when entering orders. But they don’t have the security point to access the Orders activity, so they’ll never actually see the Database tab.
+
+ 
+
+Where does the SnapShot Report Come From?
+In the previous chapter, you explored and edited a snapshot report. You know that the Snapshot activity is made available to a user through their EpicCare Security Class, but how do we ensure that the correct Snapshot report appears for each user when they open the Snapshot activity? A Pharmacist and a Physical Therapist could both open the Snapshot activity on the same patient's chart, but see a different set of print groups on their Snapshot report. Those users could consider different information to be relevant when reviewing a patient's chart.
+
+A User's appropriate Snapshot report is determined in their Profile record. How is that attached to a user?
+
+
+
+Follow the Trainer to find where a user's snapshot report is determined.
+
+Open Taylor Monster's user record.
+
+User Security >> Search for Taylor Monster.
+On the Linked Templates form, select Taylor's TRN2## Willow Ambulatory Pharmacist Template. Click Open Template.
+
+Navigate to the EpicCare form. Make note of the EpicCare Security Class listed 
+
+Open the EpicCare Security class you noted above.
+
+Security Class Editor >> Search 
+On the Additional Details form, make note of the default profile listed 
+
+In Text open the profile you noted above.
+
+Clinical administration >> Management options >> Profiles >> Search.
+Select All Screens. Navigate to the SnapShot screen.
+
+Home + F9 for "SnapShot".
+Is this same report that you edited in the previous chapter? ​​​​​​​
+
+Does Everyone Share the Same Profile (LPR)?
+Log in to Hyperspace as your technician (TECH##/train). Go to Patient Lists. If you haven't already, add Dianita to your !My List. (Hint: select the list, click Add Patient.)
+
+TRAINER DEMO: Your instructor will log in as their pharmacist (NEWRX##/train). If they haven't already, they'll add Dianita to their Clinical Monitoring list and make that their default. 
+
+Compare your technician's screen to the pharmacist's.
+
+You both have access to the Patient List activity, meaning you both have .
+You both have the Patient List activity as one of your startup activities, but it's the default activity for the pharmacist and not for the tech. This is because they have different .
+Compare the pharmacist's My Lists to the technician's.  Are they same, or different? 
+Select Dianita and look at the reports at the bottom of Patient Lists. Are they the same, or different? 
+Look at the folders that appear under Available Lists. Are they the same, or different? 
+Consider a physician who sees admitted patients. They'd have access to Patient Lists, but would they want the same My Lists or reports as a pharmacist? As a tech? 
+But, would a physician working in Epic Hospital want to see the same Available Lists (Epic Hospital, Preadmitted Patients, Recently Discharged)?  
+How are Profiles Attached to Users?
+Profiles control what users see within activities, and not every user should see the same things within activities. Except for when they do. In Patient Lists for example, the Patient Lists reports will likely vary between users. It makes sense to control/maintain that setting per job role, to ensure that each user sees the report(s) that is relevant to their work. Alternatively, every user in a hospital should see the same available lists. The purpose of Available Lists to give every user the chance to see every admitted patient in their respective hospital. It would make sense to control/maintain that setting at location/hospital level.
+
+Although Profile (LPR) records all contain the same items to configure, they can be attached in multiple places. Where to attach a profile really depends on the purpose of the profile.
+
+Who is the user? If the profile settings affect a specific group of users, it is attached to a User (EMP) template record, or to a Security Class (ECL) record.
+Where is the user? If the profile settings affect all users in a certain place, it is attached to a Department (DEP), Location (EAF), or Service Area (EAF) record.
+Should it apply to everyone? Profile record #1 is always attached to System Definitions (LSD), and applies to all users. 
+This means a user can be affected by up to 6 different profiles.
+
+User’s Template
+
+(most specific)
+
+Willow uses this level for settings specific to a group of pharmacy users and no one else, such as making the MAR read-only for technicians.
+
+Note: this is technically referred to as a “User-level” profile, because the template effectively causes the User (EMP) record to be linked to the profile.
+
+To attach a profile at this level: go to Classic >> search (Ctrl+Space) >> “User Security”, edit the template, and go to the EpicCare form. The User-level profile field links the template to a profile. 
+
+EpicCare Security Class	
+Willow uses this level for settings that apply to all pharmacy staff by linking the EpicCare security classes used by Willow to a single profile, “Rx All Pharmacy Security”.
+
+To attach a profile at this level, go to Classic >> search (Ctrl+Space) >> “Security Class Editor”, look up the EpicCare security class, and go to the Additional Details tab. The Default Profile for Epic Users field links the security class to a profile. 
+
+Login Department	
+This level is not used by Willow users (but is commonly used by nurses and physicians).
+
+To attach a profile at this level, go to Text >> Clinical Administration >> Facility Structure >> Department/Units (DEP), and open the login department, and page down once. The Default Profile for Workstations in Department field links to the profile. (Note, despite the label, this is NOT based on physical location of the workstation, but rather on users choosing this department when they log in). 
+
+Location	
+Willow users typically get a profile specific to their login location, which drives the Available Lists that appear at the bottom left of Patient Lists. This applies to everyone logging into the hospital. Willow doesn't typically own this profile. 
+
+To attach a profile at this level, go to Text >> Clinical Administration >> Facility Structure >> Locations (EAF), and open the location that represents the hospital. The profile is linked on the first screen, in the Profile field. 
+
+Service Area	This level is not commonly used.
+System Definitions (LSD)
+
+(least specific)
+
+This profile applies to every user everywhere in your system. Willow doesn’t own this profile, but users are affected by many settings made in it.
+How Do the Profiles Affecting a User Interact?
+When a user logs in, the system combines the settings from all attached Profile (LPR) records to create a compiled profile.
+
+If the same field has a value in multiple profiles, the system takes the setting from the most specific level. This is referred to as the profile hierarchy. Profile hierarchy allows administrators to give each user the correct settings without creating and maintaining an unwieldy number of profile records.
+
+Example	
+Your technicians are affected by the four profiles shown below. When they go to the MAR activity:
+
+The activity is view-only, because their most-specific profile (the one attached to their template) says so. This overrides the "No" values in the Rx All Pharmacy Security profile and the System Definitions profile. 
+They see Report (LRP) record "IP MAR" [30410000010] as the default MAR report, because that's set in the System Definitions profile and none of the other profiles affecting them have a value for that item.
+Likewise, they get the tabs defined in the System Definitions profile because none of the other profiles have a value for that item. 
+ 
+
+
+
+Making Changes to a Profile
+Before you change profile settings, you should identify:
+
+What exactly needs to change
+Who should (and should NOT) be affected by the change
+Which Profile (LPR) record(s) you should edit, and how
+From there, you can edit the profile(s) in Text.
+
+Example	
+Both pharmacists and pharmacy technicians have access to the Patient List activity. They have different My Lists, but the same reports available to them.
+
+Your technicians have complained that their default report in Patient Lists isn't very relevant. They're currently getting the same Clinical Scoring report that pharmacists see by default, which includes print groups specific to the pharmacists' Clinical Monitoring list. The technicians have requested a new report data relevant to them.
+
+You've already created this Rx Technician Overview report, but now you need to make it the default for your technicians—without affecting your pharmacists! The default Patient List report is a profile setting, but which profile should you edit?
+
+Compare the current Patient List report options for your technician (TECH##) and the instructor's Taylor Monster (NEWRX##).
+
+The default report for both is "Clinical Scoring"
+The buttons they have by default (Clinical Scoring, Overview, Antimicrobial Stewardship, etc.)
+The available reports (when you click the magnifying glass ) are the same for both users.
+Which ​​​of the settings above are you trying to change? For whom?
+
+You want to change the default report, but only for the technicians. 
+But which Profile (LPR) record or records should we edit? We need to identify which profiles affect which users. 
+Identifying the Profiles Affecting a User
+To identify the Profile (LPR) records affecting a user:
+
+Log in to Hyperspace as the user.
+Right-click the application banner at the top right corner, beneath the Log Out button.
+.
+This causes the Session Information report window to appear.
+Expand the Profile Compilation section. 
+Logged in as your technician, open the Session Information report.
+
+TRAINER DEMO: Your trainer will open the Session Information report as their Taylor Monster.
+
+
+
+
+
+ 
+
+Compare the profiles affecting your pharmacist to the ones affecting the technician.
+
+What do they have in common? 
+What's different between them? 
+Based on what you see here, which profile would you edit if you wanted to make a change that would affect... 
+
+...both pharmacists and technicians (but no one outside of Pharmacy): 
+...only technicians, and not pharmacists (nor anyone outside of Pharmacy): 
+Willows' Profile Strategy
+With profiles potentially being attached at six different levels, and almost 2,000 settings that can be made in profiles, and every clinical application being affected by them, profiles can get messy very quickly. Each team needs to follow a strategy on how it will use profiles. A good profile strategy:
+
+Ensures that users have the settings they need to do their jobs
+Makes it easy to identify in which Profile (LPR) record you should make any given setting
+Avoids needless duplication and repetition of settings
+Doesn’t impinge on the profile strategy of any other team
+ 
+
+Willow Ambulatory's profile strategy is simpler than most other clinical apps. Outpatient Pharmacies are not exactly a "department' of a hospital or clinic, and they are typically stand-alone. This means that Willow Ambulatory does not need to maintain all six levels of the profile hierarchy. Profiles are added to the Security class level, Location level, and System Definitions level. 
+
+
+
+This allows administrators to control/maintain settings for an entire enterprise, individual pharmacies, and individual job roles. Every possible setting will be set to something at the System Definitions level. If a pharmacy requires different settings than what is set in System Definitions, then those settings will be overridden in the Location Level Profile. If a job role requires different settings that what can be found in System Definitions + Location Level Profile, those settings will be overridden at the Security Class Level. All three profiles combine to create a Compiled Profile for each user.
+
+ 
+
+Willow Inpatient takes a different approach. 
+
+
+
+The "Rx All Pharmacy Security" profile is attached to each of the EpicCare security class records that affect Willow Inpatient users. In other words, this one profile serves as the security-level profile for all Willow Inpatient users. Changes made here will apply to all Willow Inpatient users, without affecting users outside of Pharmacy. The Rx All Pharmacy Security profile is configured with the needs a pharmacist in mind. Indeed, pharmacists do not have a more-specific profile than this. 
+
+Willow Inpatient users who need settings to be different than a pharmacist's settings will get a profile attached to their user template. These profiles are extremely sparsely populated. For example, in the Foundation System version of the Rx Technician profile, only about 12 items (out of ~2,000) are populated. 
+
+The Willow team rarely gets involved in configuring location-level profiles or the System Definitions profile. Those profiles affect users from all apps, not just Willow, and the EpicCare Ambulatory and Inpatient teams typically own them. If they make a setting that the Willow team doesn't want to apply to their users, the Willow team overrides it in the Rx All Pharmacy Security profile.
+
+Critical	Remember, a profile setting only matters if a user has the security points to access the activity that the setting configures. You don't need to worry about whether a technician's compiled profile let's the find the Database tab when entering orders, because they don't have security to use the Orders activity in the first place!
+Beyond the Basics	The profile strategy above has been used in the Foundation System since around 2018, but your organization might be use a different strategy. Use the Session Information report to familiarize yourself with how profiles are actually attached to Willow users in your actual environments!
+Editing Profile Records
+To edit a profile:
+
+Go to Text >> Clinical Administration >> Management Options >> Profiles (LPR).
+Open the profile that needs to be edited.
+Use the menu to navigate to the screens that need to be edited.
+Each Profile (LPR) record contains thousands of items, spread out over ~300 screens. Each record is so large that there are a series of menus within the record to help you navigate. This menu looks a lot like the Clinical Administration main menu; look to the top to confirm that you're in the right place!
+
+
+
+Text >> Clinical Administration >> Management Options >> Profiles (LPR): editing a profile
+
+Open your TRN## RX TECHNICIAN profile, and select Patient List from the menu.
+
+Exercise: Exploring and Editing Profiles
+You want to change the default My List report for your technicians to be the Rx Technician Overview report. On your way to do that, let's look at some other profile settings and how they affect Patient Lists.  
+
+You should already be in your TRN2## RX TECHNICIAN profile, on the Patient Lists and Folders screen.
+If you're not there, the path is: Text >> Clinical Administration >> Management Options >> Profiles (LPR) >> open your "trn2## Rx Technician" record and choose Patient Lists.
+In the screen shot below, write down what you see in the My List auto-creation templates field for this profile.
+
+
+The field above controls what (and how many) My Lists a user gets by default in Patient Lists. Leave Text open, but go back to Hyperspace and look at your technician's My Lists. 
+How many My Lists does your technician have (not counting "Shared Patient Lists")? 
+ Review the screen shot below of the TRN2## RX ALL PHARMACY SECURITY profile, which is attached to your technician's EpicCare security class:
+
+
+Based on what you're seeing in Hyperspace, and the screen shots above, which of the following best describes how the system is treating the values in these two profiles?
+Your technician is getting ONLY the 2 values in the user-level profile (TRN2## RX TECHNICIAN)
+Your technician is getting ONLY the 3 values in the security-level profile (TRN2## RX ALL PHARMACY SECURITY)
+Your technician is getting a COMBINATION of the values in BOTH profiles  
+
+Still in Hyperspace, make note of the folders that appear under Available Lists (on the left). Expand the Preadmitted Patients and Recently Discharged folders. 
+Note that the contents of these folders appear to be specific to Epic Medical Hospital ("EMH"), a.k.a. "Epic Hospital".
+Go back to Text. On the Patient Lists and Folders screen, find the Available custom system list folders field.
+This field controls the folders that appear under the Available Lists section in Patient Lists. 
+The field is blank in your TRN2## RX TECHNICIAN profile. 
+In which of the following profiles would expect those 3 folders you saw in Hyperspace to be coming from?  Why?
+ The TRN2## RX ALL PHARMACY SECURITY profile (attached to your EpicCare security class)
+The EHS EPIC MEDICAL HOSPITAL profile (attached to your login location)
+The SYSTEM DEFINITIONS profile (attached at the system-wide level)
+
+In your TRN2## RX TECHNICIAN profile, page down 4 times to the Patient List Reports screen.
+This screen controls the reports that you have in Patient Lists. 
+Notice that all the fields are blank on this screen, but in Hyperspace, you had reports appearing! In fact, you had the same reports that a pharmacist had.
+That's because the TRN2## RX ALL PHARMACY SECURITY profile is configured like this:
+ 
+
+You want to change your technician's default report, without removing any of the other options. Which of these fields should edit in your TRN## RX TECHNICIAN profile? Why?
+Default report for display
+Available Patient List Reports
+Startup Patient List Reports
+All of the above
+
+In your TRN2## RX TECHNICIAN profile, set the Default report for display field to "Rx Technician Overview" [94081000]. 
+Shift+F7.
+In the bottom left, you might notice a message "Background profile compile started". That's telling you that the system is updating all the possible combinations of profiles that might be affected by this change!
+You're back at the main menu for your TRN2## RX TECHNICIAN profile
+Test your work! In Hyperspace, LOG OUT and log back in as your technician (TECH##/train).
+Go back to Patient Lists and single-click Dianita. Confirm that:
+Your default report is now Tech Overview.
+You still have report buttons for Overview, Antimicrobial Stewardship, Systems Review, etc. (compare them to the screen shot above).  
+In the report search field (to the right of Anticoag/TPN/Kinetics), click the magnifying glass . 
+You still have many reports available.
+Though... if you scroll the list, you don't actually see "Tech Overview" as a choice. It appears in the search field, but it's not technically an available report.
+It's a minor thing, but let's try to fix it! (And in the process, you'll learn an important lesson!)
+Go back to Text.
+You should still be in your TRN2## RX TECHNICIAN profile, on the main menu. 
+If you aren't, open your TRN2## RX TECHNICIAN profile again. The path is Text >> Clinical Administration >> Management Options >> Profiles (LPR).
+Go to Patient Lists and page down 4 times.
+Tab down to Available Patient List Reports and enter "Rx Technician Overview" in row 1.
+Shift+F7. 
+Test your work! In Hyperspace, LOG OUT and log back in as your technician (TECH##/train).
+Go back to Patient Lists and single-click Dianita.
+Oh no! You now have ONLY your Tech Overview button.
+Click the magnifying glass  to see what's available. 
+Tech Overview is now the only report you have available! 
+When you entered that single value in the Available Patient List Reports field in your TRN2## RX TECHNICIAN profile, you overrode all the available reports that are listed in the TRN2## RX ALL PHARMACY SECURITY profile. 
+While you didn't technically override the buttons (the Patient List Startup Buttons field), a report can only be a button if it's available. 
+We should fix this!
+Go back to Text and your TRN2## RX TECHNICIAN profile.
+From the profile's main menu, go to Patient Lists and page down 4 times.
+Tab down to Available Patient List Reports and delete the Rx Technician Overview. (Hint: F2 will wipe out the text in the field.)
+Shift+F7.
+Shift+F7 again to exit your TRN2## RX TECHNICIAN profile.
+Now, let's add that report to the correct place! At the Profile: prompt, open your TRN2## RX ALL PHARMACY SECURITY profile. 
+Go to Patient Lists and page down 4 times.
+Tab down to the Available Patient List Reports field. Add "Rx Technician Overview" to the bottom of the list.
+HINT: Press the Home key, then Down Arrow to jump to the bottom of the list.
+The pharmacists probably won't ever use this report, but there's no harm in adding it here.
+The only other option would be to copy all of these reports to the TRN2## RX TECHNICIAN profile, and remember to update both places every time you need to update the available reports.  
+Shift+F7 twice to save your change and exit profile.
+Test your work! In Hyperspace, LOG OUT and log back in as your technician (TECH##/train).
+Go to Patient Lists and select Dianita. Confirm that:
+All your report buttons are back.
+All your available reports are back, and Tech Overview is one of them.
+Log out and log in as your new pharmacist (NEWRX##/train). Select Dianita and confirm that:
+Your default report is still Clinical Scoring.
+You still have all your report buttons.
+You still have all your available reports, and Tech Overview is one of them.
+Nod to yourself. Revel in the satisfaction of a job well done. 
+If You Have Time: Flags to Resolve
+This exercise is less guided.
+
+Example	Profiles can determine which flags a user can resolve in Willow Ambulatory. Your leadership has decided to create a flag that can only be resolved by pharmacy managers. It is a custom flag that will be manually added to scripts when necessary. Your pharmacy staff has been trained on the "when/why" to add this flag. We know it simply as the "Speak With a Manager Flag".
+Exclude your Pharmacists from resolving the Speak with a manager flag.
+
+ Log into Willow Ambulatory as your Taylor Monster NEWRX##/train.
+Open your Dianita patient's chart from Front Counter.
+Go to Rx Management >> New RX >> Enter Lisinopril 10 tab 10mg po .daily d30tab r11 ow wt pseeger
+In the other Flag  field Add the Speak With a Manager Flag, and click Accept and Stay.
+
+
+Click the flag to open it, but DO NOT RESOLVE.
+Verify that you see the "Resolve Flag" button in the bottom right corner of the window.
+This is the button that you want to remove. You can remove it though a profile record by restricting which flags Taylor can resolve.
+
+Identify which profiles are affecting Taylor.
+Hint: Epic >> Help >> Session Information Report >> Profile Compilation.
+Identify which profile should be edited.
+You'll get to your technicians later, right now you are changing this setting for your pharmacists, and only your pharmacists.
+Open the Profile you identified. 
+Clinical Administration >> Management Options >> Profiles >> Search
+For class purposes, you should only be editing settings for your Taylor Monster and not your classmate's. Make sure to only edit records with your TRN##.
+Navigate to the Prescription Flags You Can Resolve screen
+Home + F9.
+On the left hand side of the screen, administrators list the types of flags that a user can resolve. Users will be able to resolve the flag types listed here in the compiled profile, unless overridden by the column on the right hand side of the screen. Any flag type listed in "Flags Excluded" will be unresolvable, even if the flag type is listed on the Flag Types column on the left.
+
+
+
+ Exclude your Taylor Monster from resolving the Speak with a manger flag.
+ID may vary, search for it by name.
+Shift + F7 to close the record.
+Test Your Work
+LOG OUT and log back in as Taylor Monster NEWRX##/train.
+Reopen your Dianita patient's chart, and open the SPEAK WITH A MANAGER flag on her lisinopril script.
+Confirm that you do not see the "Resolve Flag" button.
+High five your neighbor.
+Focus Questions
+For the following questions, assume that you have these four profiles affecting your technicians. Your pharmacists are affected by only the TRN2## RX ALL PHARMACY SECURITY profile, the EHS EPIC MEDICAL HOSPITAL profile, and the SYSTEM DEFINITIONS profile. 
+
+
+
+Pretend that you've just created a new report, "RX MAR REPORT." You want it to be the default MAR report for your pharmacists and your technicians, but don't want to affect nurses, respiratory therapists, etc. In which profile(s) should you edit the Default MAR report field? Why?
+
+Pretend that someone has created a new tab to display on the MAR, called "UNVERIFIED ORDERS ONLY". You enter it (and only it) in the Tabs to Display field in the TRN2## RX ALL PHARMACY PROFILE. What happens?
+
+What would be a better way to give your users the UNVERIFIED ORDERS ONLY tab?
+
+To check your answers, review this section in Galaxy and click the  to show answers. 
+
+Appendix A: RX205 Self-Assessment
+The purpose of the Willow User Configuration Self-Assessment is to ensure you understand the role of Willow analysts in configuring user-related records.
+
+This is an online, unproctored exam. You may attempt it as many times as you like to reach the passing score of 80%.
+
+The self-assessment is:
+
+Open book, open note, open system
+Not timed (you can expect the assessment to take roughly 20-30 minutes)
+12 questions
+12.5 points total, covering these areas:
+Epic's Data Structure (2 pt)
+Provisioning pharmacy staff (3 pts)
+Adjusting system access (1 pt)
+Changing startup activities and toolbars (1 pt)
+Configuring print group-based reports (3 pts)
+Controlling options within activities (2.5 pts)
+True/False and Multiple choice (single select and multiple select)
+The questions will be similar in style to the ones on the RX100 Willow Inpatient Fundamentals Self-Assessment
+ 
+
+You may take the self-assessment whenever you feel ready. To find the self-assessment, follow these steps:
+
+Go to your training track (training.epic.com >> Your In-Progress Certificates >> Willow Inpatient track).
+Find the section for RX205: Self-Assessment.
+Click Take Assessment (look to the far right of the section header).
+ 
+
+After you submit the Self-Assessment, you will receive an email with your score.
+
+Forums Galaxy Nova Sherlock Community Library Training Home Show All 
+ 
+  
